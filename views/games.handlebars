@@ -1,0 +1,38 @@
+<h1>Games</h1>
+<a href="/">Home</a>
+<h3>Add a new game:</h3>
+<form id="addgame" action="/games" method="post">
+    Gaming Company: <select name="gaming_company">
+        \{{#each gaming_company}}
+            <option value="{{id}}">\{{comp_name}}</option>
+        \{{/each}}
+    </select> <br>
+    Game Name: <input type="text" name="gameName"><br>
+    Release Date: <input type="date" name="date"><br>
+    Rating: <input type="number" name="rating"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<hr/>
+<h3>Current Games:</h3>
+<table>
+    <thead> 
+        <th>Company Name</th> 
+        <th>Game Name</th>
+        <th>Release Date</th>
+        <th>Rating</th>
+    </thead> 
+    <tbody> 
+        \{{#each game}} 
+            <tr> 
+                <td>\{{companyID}}</td>
+                <td>\{{game_name}}</td>
+                <td>\{{release_date}}</td>
+                <td>\{{rating}}</td> 
+                <td><button onclick="deleteGame({{id}})">Delete</button></td>
+                <td><a href="/games/{{id}}">Update</a></td>
+            </tr> 
+        \{{/each}} 
+    </tbody> 
+</table> 
+

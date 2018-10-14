@@ -1,0 +1,25 @@
+<h1>Genres</h1>
+<a href="/">Home</a>
+<h3>Add a new genre:</h3>
+<form id="addgenre" action="/genres" method="post">
+    Name of Genre: <input type="text" name="category"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<hr/>
+<h3>Current Genres:</h3>
+<table>
+    <thead> 
+        <th>Genre</th> 
+    </thead> 
+    <tbody> 
+        \{{#each genre}} 
+        <tr> 
+            <td>\{{category}}</td> 
+            <td><button onclick="deleteGenre({{id}})">Delete</button></td>
+            <td><a href="/genres/{{id}}">Update</a></td>
+        </tr> 
+        \{{/each}} 
+    </tbody> 
+</table> 
+

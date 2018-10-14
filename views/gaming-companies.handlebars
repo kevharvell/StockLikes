@@ -1,0 +1,25 @@
+<h1>Gaming Companies</h1>
+<a href="/">Home</a>
+<h3>Add a new gaming company:</h3>
+<form id="addcompany" action="/gaming-companies" method="post">
+    Name of Gaming Company: <input type="text" name="comp_name"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<hr/>
+<h3>Current Gaming Companies:</h3>
+<table>
+    <thead> 
+        <th>Company Name</th> 
+    </thead> 
+    <tbody> 
+        \{{#each gaming_company}}
+        <tr> 
+            <td>\{{comp_name}}</td> 
+            <td><button onclick="deleteCompany({{id}})">Delete</button></td>
+            <td><a href="/gaming_companies/{{id}}">Update</a></td>
+        </tr> 
+        \{{/each}} 
+    </tbody> 
+</table> 
+

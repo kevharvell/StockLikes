@@ -1,0 +1,39 @@
+<h1>Stocks</h1>
+<a href="/">Home</a>
+<h3>Add a new gaming company stock:</h3>
+<form id="addstock" action="/stocks" method="post">
+    Gaming Company: <select name="gaming_company">
+        \{{#each gaming_company}}
+            <option value="{{id}}">\{{comp_name}}</option>
+        \{{/each}}
+    </select> <br>
+    Ticker Symbol: <input type="text" name="ticker" autocapitalize="characters"><br>
+    Date: <input type="date" name="date"><br>
+    <!-- Need to write JS that will validate closing price to 2 decimals -->
+    Closing Price: <input type="number" name="price_close" min="0" step="0.01"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<hr/>
+<h3>Current Stocks:</h3>
+<table>
+    <thead> 
+        <th>Company Name</th> 
+        <th>Ticker Symbol</th>
+        <th>Date</th>
+        <th>Closing Price</th>
+    </thead> 
+    <tbody> 
+        \{{#each stock}} 
+            <tr> 
+                <td>\{{companyID}}</td>
+                <td>\{{ticker}}</td>
+                <td>\{{date}}</td>
+                <td>\{{price_close}}</td> 
+                <td><button onclick="deleteStock({{id}})">Delete</button></td>
+                <td><a href="/stocks/{{id}}">Update</a></td>
+            </tr> 
+        \{{/each}} 
+    </tbody> 
+</table> 
+

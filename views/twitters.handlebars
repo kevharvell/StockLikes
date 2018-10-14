@@ -1,0 +1,38 @@
+<h1>Twitter Pages</h1>
+<a href="/">Home</a>
+<h3>Add a new gaming company Twitter Page:</h3>
+<form id="addtwitter" action="/twitters" method="post">
+    Gaming Company: <select name="gaming_company">
+        \{{#each gaming_company}}
+            <option value="{{id}}">\{{comp_name}}</option>
+        \{{/each}}
+    </select> <br>
+    URL: <input type="text" name="url"><br>
+    Date: <input type="date" name="date"><br>
+    Buzz Factor: <input type="number" name="buzz"><br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<hr/>
+<h3>Current Twitter Pages:</h3>
+<table>
+    <thead> 
+        <th>Company Name</th> 
+        <th>URL</th>
+        <th>Date</th>
+        <th>Buzz Facor</th>
+    </thead> 
+    <tbody> 
+        \{{#each twitter}} 
+            <tr> 
+                <td>\{{companyID}}</td>
+                <td>\{{url}}</td>
+                <td>\{{date}}</td>
+                <td>\{{buzz}}</td> 
+                <td><button onclick="deleteTwitter({{id}})">Delete</button></td>
+                <td><a href="/twitters/{{id}}">Update</a></td>
+            </tr> 
+        \{{/each}} 
+    </tbody> 
+</table> 
+
