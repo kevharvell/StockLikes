@@ -1,13 +1,13 @@
 <h1>Genres</h1>
 <h3>Add a new genre:</h3>
 <form id="addgenre" action="/genres" method="post">
-    Name of Genre: <input type="text" name="category"><br>
+    Name of Genre: <input type="text" class="m-2" name="category"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
 <hr/>
 <h3>Current Genres:</h3>
-<table>
+<table class="table table-dark bg-secondary">
     <thead> 
         <th>Genre</th> 
     </thead> 
@@ -15,8 +15,12 @@
         \{{#each genre}} 
         <tr> 
             <td>\{{category}}</td> 
-            <td><button onclick="deleteGenre({{id}})">Delete</button></td>
-            <td><a href="/genres/{{id}}">Update</a></td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteCompany({{id}})">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+            </td>
         </tr> 
         \{{/each}} 
     </tbody> 

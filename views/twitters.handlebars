@@ -1,20 +1,20 @@
 <h1>Twitter Pages</h1>
 <h3>Add a new gaming company Twitter Page:</h3>
 <form id="addtwitter" action="/twitters" method="post">
-    Gaming Company: <select name="gaming_company">
+    Gaming Company: <select class="m-2" name="gaming_company">
         \{{#each gaming_company}}
             <option value="{{id}}">\{{comp_name}}</option>
         \{{/each}}
     </select> <br>
-    URL: <input type="text" name="url"><br>
-    Date: <input type="date" name="date"><br>
-    Buzz Factor: <input type="number" name="buzz"><br>
+    URL: <input type="text" class="m-2" name="url"><br>
+    Date: <input type="date" class="m-2" name="date"><br>
+    Buzz Factor: <input type="number" class="m-2" name="buzz"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
 <hr/>
 <h3>Current Twitter Pages:</h3>
-<table>
+<table class="table table-dark bg-secondary">
     <thead> 
         <th>Company Name</th> 
         <th>URL</th>
@@ -28,8 +28,12 @@
                 <td>\{{url}}</td>
                 <td>\{{date}}</td>
                 <td>\{{buzz}}</td> 
-                <td><button onclick="deleteTwitter({{id}})">Delete</button></td>
-                <td><a href="/twitters/{{id}}">Update</a></td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteCompany({{id}})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                </td>
             </tr> 
         \{{/each}} 
     </tbody> 

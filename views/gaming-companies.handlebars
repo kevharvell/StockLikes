@@ -1,13 +1,13 @@
 <h1>Gaming Companies</h1>
 <h3>Add a new gaming company:</h3>
 <form id="addcompany" action="/gaming-companies" method="post">
-    Name of Gaming Company: <input type="text" name="comp_name"><br>
+    Name of Gaming Company: <input type="text" class="m-2" name="comp_name"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
 <hr/>
 <h3>Current Gaming Companies:</h3>
-<table>
+<table class="table table-dark bg-secondary">
     <thead> 
         <th>Company Name</th> 
     </thead> 
@@ -15,8 +15,12 @@
         \{{#each gaming_company}}
         <tr> 
             <td>\{{comp_name}}</td> 
-            <td><button onclick="deleteCompany({{id}})">Delete</button></td>
-            <td><a href="/gaming_companies/{{id}}">Update</a></td>
+            <td>
+                <button class="btn btn-danger" onclick="deleteCompany({{id}})">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+            </td>
         </tr> 
         \{{/each}} 
     </tbody> 

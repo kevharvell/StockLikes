@@ -1,20 +1,20 @@
 <h1>Games</h1>
 <h3>Add a new game:</h3>
 <form id="addgame" action="/games" method="post">
-    Gaming Company: <select name="gaming_company">
+    Gaming Company: <select class="m-2" name="gaming_company">
         \{{#each gaming_company}}
             <option value="{{id}}">\{{comp_name}}</option>
         \{{/each}}
     </select> <br>
-    Game Name: <input type="text" name="gameName"><br>
-    Release Date: <input type="date" name="date"><br>
-    Rating: <input type="number" name="rating"><br>
+    Game Name: <input type="text" class="m-2" name="gameName"><br>
+    Release Date: <input type="date" class="m-2" name="date"><br>
+    Rating: <input type="number" class="m-2" name="rating" min="0" max="100"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
 <hr/>
 <h3>Current Games:</h3>
-<table>
+<table class="table table-dark bg-secondary">
     <thead> 
         <th>Company Name</th> 
         <th>Game Name</th>
@@ -28,8 +28,12 @@
                 <td>\{{game_name}}</td>
                 <td>\{{release_date}}</td>
                 <td>\{{rating}}</td> 
-                <td><button onclick="deleteGame({{id}})">Delete</button></td>
-                <td><a href="/games/{{id}}">Update</a></td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteCompany({{id}})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                </td>
             </tr> 
         \{{/each}} 
     </tbody> 
