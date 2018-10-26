@@ -30,27 +30,30 @@ INNER JOIN stock ON gaming_company.id = stock.companyID)
 INNER JOIN twitter ON gaming_company.id = twitter.companyID)
 INNER JOIN game ON gaming_company.id = game.companyID);
 
+--this selects games with a high rating
+SELECT game_name, rating 
 
+FROM game WHERE game.rating >= 2;
  
 --add a new gaming company
-INSERT INTO `gaming_company` (comp_name) values (:comp_name);
+INSERT INTO gaming_company (comp_name) values (:comp_name);
 
 
 --add a new stock
-INSERT INTO `stock` (ticker, date, price_close, companyID) values (:ticker, :date, :price_close, :id_value);
+INSERT INTO stock (ticker, date, price_close, companyID) values (:ticker, :date, :price_close, :id_value);
 
 
 --add a new twitter page
-INSERT INTO `twitter` (date, url, buzz, companyID) values (:date, :url, :buzz, :id_value); 
+INSERT INTO twitter (date, url, buzz, companyID) values (:date, :url, :buzz, :id_value); 
 
 
 
 --add a new game 
-INSERT INTO `game` (game_name, release_date, rating, companyID) values (:gameName, :date, :rating, :companyID_value);
+INSERT INTO game (game_name, release_date, rating, companyID) values (:gameName, :date, :rating, :companyID_value);
 
 
 --add a new genre
-INSERT INTO `genre` (category) values (:category);
+INSERT INTO genre (category) values (:category);
 
 
 
@@ -93,3 +96,6 @@ DELETE FROM game WHERE id = :game_name_selection;
 
 --delete genre
 DELETE FROM genre WHERE id = :genre_from_selection;
+
+--delete entry in game_genre table
+DELETE FROM game_genre WHERE gameID = :game_name_selection and genreID = :genre_from_selection;
