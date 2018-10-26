@@ -18,6 +18,20 @@ SELECT companyID, game_name FROM game;
 --show all genres
 SELECT category FROM genre;
 
+--this is for the display on Home
+SELECT gaming_company.comp_name, 
+stock.ticker, stock.price_close, twitter.url, twitter.buzz,
+game.game_name
+
+
+FROM (((gaming_company
+
+INNER JOIN stock ON gaming_company.id = stock.companyID)
+INNER JOIN twitter ON gaming_company.id = twitter.companyID)
+INNER JOIN game ON gaming_company.id = game.companyID);
+
+
+ 
 --add a new gaming company
 INSERT INTO `gaming_company` (comp_name) values (:comp_name);
 
