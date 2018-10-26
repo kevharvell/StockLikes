@@ -30,10 +30,10 @@
                 <td>\{{date}}</td>
                 <td>\{{price_close}}</td> 
                 <td>
+                    <a class="btn btn-info" href="/stocks/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-danger" onclick="deleteCompany({{id}})">
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                 </td>
             </tr> 
         \{{/each}} 

@@ -8,7 +8,7 @@
     </select> <br>
     URL: <input type="text" class="m-2" name="url"><br>
     Date: <input type="date" class="m-2" name="date"><br>
-    Buzz Factor: <input type="number" class="m-2" name="buzz"><br>
+    Buzz Factor: <input type="number" class="m-2" name="buzz" min="0"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
@@ -29,10 +29,10 @@
                 <td>\{{date}}</td>
                 <td>\{{buzz}}</td> 
                 <td>
+                    <a class="btn btn-info" href="/twitters/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-danger" onclick="deleteCompany({{id}})">
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                 </td>
             </tr> 
         \{{/each}} 

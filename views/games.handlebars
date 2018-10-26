@@ -7,6 +7,11 @@
         \{{/each}}
     </select> <br>
     Game Name: <input type="text" class="m-2" name="gameName"><br>
+    Genre: <select class="m-2" name="genreInput">
+        \{{#each genre}}
+            <option value="{{id}}">\{{category}}</option>
+        \{{/each}}
+    </select> <br>
     Release Date: <input type="date" class="m-2" name="date"><br>
     Rating: <input type="number" class="m-2" name="rating" min="0" max="100"><br>
     <br>
@@ -18,6 +23,7 @@
     <thead> 
         <th>Company Name</th> 
         <th>Game Name</th>
+        <th>Genre</th>
         <th>Release Date</th>
         <th>Rating</th>
     </thead> 
@@ -26,13 +32,14 @@
             <tr> 
                 <td>\{{companyID}}</td>
                 <td>\{{game_name}}</td>
+                <td>\{{genre}}</td>
                 <td>\{{release_date}}</td>
                 <td>\{{rating}}</td> 
                 <td>
+                    <a class="btn btn-info" href="/games/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-danger" onclick="deleteCompany({{id}})">
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <a class="btn btn-info" href="/gaming_companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                 </td>
             </tr> 
         \{{/each}} 
