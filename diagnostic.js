@@ -48,7 +48,7 @@ app.get('/twitters', function(req, res, next) {
   var context = {
     title: "Stock Likes - Twitter Pages",
   };
-  let url = `https://twitter.com/NintendoAmerica`;
+  /*let url = `https://twitter.com/NintendoAmerica`;
   axios({
       method: 'get',
       url
@@ -59,9 +59,9 @@ app.get('/twitters', function(req, res, next) {
   })
   .catch(function (error) {
       console.log(error);
-  });
+  });*/
 
-  //res.render('twitters', context);
+  res.render('twitters', context);
 });
 
 app.get('/games', function(req, res, next) {

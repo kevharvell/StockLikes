@@ -1,5 +1,5 @@
 {
-  "name": "Gaming Stock Likes",
+  "name": "Gaming_Stock_Likes",
   "version": "1.0.0",
   "description": "Gaming Stock Likes",
   "main": "diagnostic.js",
@@ -14,6 +14,7 @@
     "express": "^4.13.2",
     "express-handlebars": "^2.0.1",
     "express-session": "^1.11.3",
+    "forever": "^0.15.3",
     "mysql": "^2.8.0"
   },
   "devDependencies": {
