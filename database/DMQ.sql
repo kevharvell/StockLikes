@@ -50,10 +50,10 @@ FROM game WHERE game.rating >= 2;
 INSERT INTO gaming_company (comp_name) values (:comp_name);
 
 --add a new stock
-INSERT INTO stock (ticker, date, price_close, companyID) values (:ticker, :date, :price_close, :id_value);
+INSERT INTO stock (ticker, date_recorded, price_close, companyID) values (:ticker, :date, :price_close, :id_value);
 
 --add a new twitter page
-INSERT INTO twitter (date, url, buzz, companyID) values (:date, :url, :buzz, :id_value); 
+INSERT INTO twitter (date_recorded, url, buzz, companyID) values (:date, :url, :buzz, :id_value); 
 
 --add a new game 
 INSERT INTO game (game_name, release_date, rating, companyID) values (:gameName, :date, :rating, :companyID_value);
@@ -66,10 +66,10 @@ INSERT INTO genre (category) values (:category);
 UPDATE gaming_company SET comp_name = :comp_name WHERE id = :gaming_company_ID_from_input; 
 
 --edit stock
-UPDATE stock SET ticker = :ticker_value, date = :date, price_close = :price_close, buzz = :buzz, WHERE id = :stock_ID_from_input;
+UPDATE stock SET ticker = :ticker_value, date_recorded = :date, price_close = :price_close, buzz = :buzz, WHERE id = :stock_ID_from_input;
 
 --edit twitter page
-UPDATE twitter SET date= :date, date = :date_value, url = :url, buzz = :buzz, WHERE id = :twitter_ID_from_input;
+UPDATE twitter SET date_recorded = :date_value, url = :url, buzz = :buzz, WHERE id = :twitter_ID_from_input;
 
 --edit game
 UPDATE game SET game_name = :gameName, release_date = :date, rating = :rating WHERE id = :game_id_input;
