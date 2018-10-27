@@ -21,6 +21,13 @@ app.get('/', function(req, res, next) {
   res.render('home', context);
 });
 
+app.get('/about', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - About"
+  };
+  res.render('about', context);
+});
+
 app.get('/gaming-companies', function(req, res, next) {
   var context = {
     title: "Stock Likes - Gaming Companies"

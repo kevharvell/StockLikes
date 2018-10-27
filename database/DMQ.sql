@@ -1,5 +1,14 @@
---for all the id-related stuff, would that be this.id selection from the JS? in the sample file
---all of it is referred to by "from dropdown menu" or something like that.
+/*
+GAMING STOCK LIKES
+Description: Gaming Stock Likes is a database centered around gaming companies that hopefully will be 
+utilized one day as a stock market sentiment indicator. A stock market sentiment indicator can be used 
+to see how a group feels about a certain market. In our case, we will be using various gaming companies’ 
+Twitter pages to sum up Likes, Retweets, and Comments in order to create a “buzz” factor. The higher 
+the buzz factor, the more popular and trending a gaming company is. Additionally, we will feature games 
+released by each company along with stock ticker data such as the last closing price of the stock.
+Authors: Kevin Harvell and Will Darnell
+Last Update: 10/26/2018
+*/
 
 
 --show all gaming companies
