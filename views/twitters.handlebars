@@ -1,13 +1,13 @@
 <h1>Twitter Pages</h1>
 <h3>Add a new gaming company Twitter Page:</h3>
 <form id="addtwitter" action="/twitters" method="post">
-    Gaming Company: <select class="m-2" name="gaming_company">
+    Gaming Company: <select class="m-2" name="gaming_company" required>
         \{{#each gaming_company}}
             <option value="{{id}}">\{{comp_name}}</option>
         \{{/each}}
     </select> <br>
     URL: <input type="text" class="m-2" name="url"><br>
-    Date: <input type="date" class="m-2" name="date"><br>
+    Date: <input type="date" class="m-2" name="date" required><br>
     Buzz Factor: <input type="number" class="m-2" name="buzz" min="0"><br>
     <br>
     <input type="submit" value="Submit">

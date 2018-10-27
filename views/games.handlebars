@@ -1,13 +1,13 @@
 <h1>Games</h1>
 <h3>Add a new game:</h3>
 <form id="addgame" action="/games" method="post">
-    Gaming Company: <select class="m-2" name="gaming_company">
+    Gaming Company: <select class="m-2" name="gaming_company" required>
         \{{#each gaming_company}}
             <option value="{{id}}">\{{comp_name}}</option>
         \{{/each}}
     </select> <br>
-    Game Name: <input type="text" class="m-2" name="gameName"><br>
-    Genre: <select class="m-2" name="genreInput">
+    Game Name: <input type="text" class="m-2" name="gameName" required><br>
+    Genre: <select class="m-2" name="genreInput" required>
         \{{#each genre}}
             <option value="{{id}}">\{{category}}</option>
         \{{/each}}
