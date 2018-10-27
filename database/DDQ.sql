@@ -24,6 +24,7 @@ CREATE TABLE `stock`(
 	`date_recorded` date NOT NULL,
 	`price_close` DECIMAL(8, 2),
 	`companyID` int(11) NOT NULL,
+	UNIQUE (date_recorded),
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`)
 ) ENGINE=InnoDB;
@@ -35,6 +36,7 @@ CREATE TABLE `twitter` (
 	`url` varchar(80),
 	`buzz` int(20),
 	`companyID` int(11) NOT NULL,
+	UNIQUE (date_recorded),
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`)
 ) ENGINE=InnoDB;
