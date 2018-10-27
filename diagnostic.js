@@ -1,12 +1,14 @@
+var axios = require('axios');
 var express = require('express');
 //var mysql = require('./dbcon.js');
-
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
+
+app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(req, res, next) {
   var context = {
@@ -19,6 +21,13 @@ app.get('/', function(req, res, next) {
 		});
 	});*/
   res.render('home', context);
+});
+
+app.get('/about', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - About"
+  };
+  res.render('about', context);
 });
 
 app.get('/gaming-companies', function(req, res, next) {
@@ -37,9 +46,22 @@ app.get('/stocks', function(req, res, next) {
 
 app.get('/twitters', function(req, res, next) {
   var context = {
-    title: "Stock Likes - Twitter Pages"
+    title: "Stock Likes - Twitter Pages",
   };
-  res.render('twitters', context);
+  let url = `https://twitter.com/NintendoAmerica`;
+  axios({
+      method: 'get',
+      url
+  })
+  .then(function (response) {
+      let twitterScrape = response.data;
+      res.render('twitters', {title:"Stock Likes - Twitter Pages", twitterScrape: twitterScrape});
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
+
+  //res.render('twitters', context);
 });
 
 app.get('/games', function(req, res, next) {
