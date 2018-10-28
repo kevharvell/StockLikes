@@ -1,4 +1,5 @@
 var axios = require('axios');
+var cheerio = require('cheerio');
 var express = require('express');
 //var mysql = require('./dbcon.js');
 var app = express();
@@ -48,20 +49,30 @@ app.get('/twitters', function(req, res, next) {
   var context = {
     title: "Stock Likes - Twitter Pages",
   };
-  /*let url = `https://twitter.com/NintendoAmerica`;
+  let url = `https://twitter.com/NintendoAmerica`;
   axios({
       method: 'get',
       url
   })
   .then(function (response) {
-      let twitterScrape = response.data;
-      res.render('twitters', {title:"Stock Likes - Twitter Pages", twitterScrape: twitterScrape});
+      let $ = cheerio.load(response.data);
+      var likes = [];
+      var buzzCount = 0;
+      $(".ProfileTweet-actionCount").each((i, elem) => {
+          likes[i] = parseInt(elem.attribs["data-tweet-stat-count"]);
+          if(!Number.isNaN(likes[i])) {
+            buzzCount += likes[i];
+          }
+      });
+      context.buzzCount = buzzCount;
+      res.render('twitters', context);
   })
+
   .catch(function (error) {
       console.log(error);
-  });*/
+  });
 
-  res.render('twitters', context);
+  //res.render('twitters', context);
 });
 
 app.get('/games', function(req, res, next) {

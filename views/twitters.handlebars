@@ -8,7 +8,7 @@
     </select> <br>
     URL: <input type="text" class="m-2" name="url"><br>
     Date: <input type="date" class="m-2" name="date" required><br>
-    Buzz Factor: <input type="number" class="m-2" name="buzz" min="0"><br>
+    Buzz Factor: <input type="number" class="m-2" name="buzz" min="0" value="{{buzzCount}}"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
@@ -19,7 +19,7 @@
         <th>Company Name</th> 
         <th>URL</th>
         <th>Date</th>
-        <th>Buzz Facor</th>
+        <th>Buzz Factor</th>
     </thead> 
     <tbody> 
         \{{#each twitter}} 
@@ -38,5 +38,4 @@
         \{{/each}} 
     </tbody> 
 </table> 
-{{twitterScrape}}
 

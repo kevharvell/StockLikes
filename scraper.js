@@ -1,15 +1,24 @@
 
 const axios = require('axios');
+const cheerio = require('cheerio');
+const url = `https://twitter.com/SEGA`;
 
-let url = `https://twitter.com/NintendoAmerica`;
   axios({
       method: 'get',
       url
   })
   .then(function (response) {
-      let twitterScrape = response.data;
-      var likes = twitterScrape.querySelectorAll("span.ProfileTweet-actionCountForPresentation");
-      console.log(likes);
+      let $ = cheerio.load(response.data);
+      var likes = [];
+      var sum = 0;
+      $(".ProfileTweet-actionCount").each((i, elem) => {
+          likes[i] = parseInt(elem.attribs["data-tweet-stat-count"]);
+          if(!Number.isNaN(likes[i])) {
+            sum += likes[i];
+          }
+      });
+      
+      console.log(sum);
   })
   .catch(function (error) {
       console.log(error);
