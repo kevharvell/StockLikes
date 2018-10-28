@@ -1,7 +1,7 @@
 var axios = require('axios');
 var cheerio = require('cheerio');
 var express = require('express');
-//var mysql = require('./dbcon.js');
+var mysql = require('./dbcon.js');
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
