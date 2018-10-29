@@ -69,7 +69,7 @@ CREATE TABLE `game_genre` (
 
 
 INSERT INTO `gaming_company` (comp_name) values ("Nintendo");
-INSERT INTO `stock` (ticker, date_recorded, price_close, companyID)v menalues ("NTDOY", "2018-10-5", 45.15, 1);
+INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) values ("NTDOY", "2018-10-5", 45.15, 1);
 INSERT INTO `twitter` (date_recorded, url, buzz, companyID) values ("2018-10-11", "https://twitter.com/NintendoAmerica", 120825, 1); 
 INSERT INTO `game` (game_name, release_date, rating, companyID) values ("Super Mario Party", "2018-10-5", 2, 1);
 INSERT INTO `genre` (category) values ("Party");

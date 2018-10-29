@@ -15,7 +15,7 @@ app.get('/', function(req, res, next) {
   var context = {
     title: "Stock Likes Database"
   };
-	/*mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
+	/*mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")', function(err) {
 	  mysql.pool.query('SELECT * FROM diagnostic', function(err, rows, fields){
 		  context.results = JSON.stringify(rows);
 		  res.render('home',context);
@@ -36,6 +36,18 @@ app.get('/gaming-companies', function(req, res, next) {
     title: "Stock Likes - Gaming Companies"
   };
   res.render('gaming-companies', context);
+});
+
+app.post('/gaming-companies', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - Gaming Companies"
+  };
+  let sql = "INSERT INTO gaming_company (comp_name) values ('comp_nameInput.value')";
+  mysql.pool.query(sql, function(err, result) {
+    if(err) throw err;
+    console.log("Number of records inserted: " + result.affectedRows);
+    res.render('gaming-companies', context);
+  }); 
 });
 
 app.get('/stocks', function(req, res, next) {
