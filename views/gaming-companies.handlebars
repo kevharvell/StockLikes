@@ -12,9 +12,9 @@
         <th>Company Name</th> 
     </thead> 
     <tbody> 
-        \{{#each gaming_company}}
+        {{#each gaming_company}}
         <tr> 
-            <td>\{{comp_name}}</td> 
+            <td>{{comp_name}}</td> 
             <td>
                 <a class="btn btn-info" href="/gaming-companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                 <button class="btn btn-danger" onclick="deleteCompany({{id}})">
@@ -22,7 +22,8 @@
                 </button>
             </td>
         </tr> 
-        \{{/each}} 
+        {{/each}} 
     </tbody> 
 </table> 
+
 
