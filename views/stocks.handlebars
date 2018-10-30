@@ -1,14 +1,14 @@
 <h1>Stocks</h1>
 <h3>Add a new gaming company stock:</h3>
 <form id="addstock" action="/stocks" method="post">
-    Gaming Company: <select class="m-2" name="gaming_company" required>
-        \{{#each gaming_company}}
-            <option value="{{id}}">\{{comp_name}}</option>
-        \{{/each}}
+    Gaming Company: <select class="m-2" name="gaming_companyInput" required>
+        {{#each gaming_company}}
+            <option value="{{id}}">{{comp_name}}</option>
+        {{/each}}
     </select> <br>
-    Ticker Symbol: <input type="text" class="m-2" name="ticker" autocapitalize="characters" required><br>
-    Date: <input type="date" class="m-2" name="date" required><br>
-    Closing Price: <input type="number" class="m-2" name="price_close" min="0" step="0.01"><br>
+    Ticker Symbol: <input type="text" class="m-2" name="tickerInput" autocapitalize="characters" required><br>
+    Date: <input type="date" class="m-2" name="dateInput" required><br>
+    Closing Price: <input type="number" class="m-2" name="price_closeInput" min="0" step="0.01"><br>
     <br>
     <input type="submit" value="Submit">
 </form>
@@ -22,12 +22,12 @@
         <th>Closing Price</th>
     </thead> 
     <tbody> 
-        \{{#each stock}} 
+        {{#each stock}} 
             <tr> 
-                <td>\{{companyID}}</td>
-                <td>\{{ticker}}</td>
-                <td>\{{date}}</td>
-                <td>\{{price_close}}</td> 
+                <td>{{comp_name}}</td>
+                <td>{{ticker}}</td>
+                <td>{{date}}</td>
+                <td>${{price_close}}</td> 
                 <td>
                     <a class="btn btn-info" href="/stocks/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-danger" onclick="deleteCompany({{id}})">
@@ -35,7 +35,7 @@
                     </button>
                 </td>
             </tr> 
-        \{{/each}} 
+        {{/each}} 
     </tbody> 
 </table> 
 
