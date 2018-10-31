@@ -132,12 +132,56 @@ app.get('/twitters', function(req, res, next) {
   //res.render('twitters', context);
 });
 
+
+//GAMES PAGE - GET
 app.get('/games', function(req, res, next) {
   var context = {
     title: "Stock Likes - Games"
   };
-  res.render('games', context);
+  //Dropdown for gaming compant
+  let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
+  mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+    if(err) throw err;
+    context.gaming_company = rows;
+     //dropdown for genre
+   let sqlShowComps = "SELECT id, category FROM genre";
+  mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+    if(err) throw err;
+    context.genre = rows; 
+
+    //Populate Current Games Table
+    let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.game_name, genre.category, game.release_date, game.rating " 
+                     + "FROM gaming_company "
+                     + "INNER JOIN game ON gaming_company.id = game.companyID "
+                     + "INNER JOIN game_genre ON game.id = gameID "
+                     + "INNER JOIN genre ON game_genre.genreID = genre.id";
+    mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+      if(err) throw err;
+      context.game = rows;
+      res.render('games', context);
+    });
+  });
 });
+  });
+
+
+// GAMES PAGE - POST
+app.post('/games', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - Games"
+  };
+  let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?)";
+  let insertParams = [req.body.gameNameInput, req.body.dateInput, req.body.ratingInput, req.body.gaming_companyInput];
+
+  mysql.pool.query(sqlInsert, insertParams, function(err, result) {
+    // Show results of INSERT in console
+    if(err) throw err;
+    console.log("Number of records inserted: " + result.affectedRows);
+    // Populate database to table
+    res.redirect('/games');
+  });
+});
+
 
 // GENRES PAGE - GET
 app.get('/genres', function(req, res, next) {
