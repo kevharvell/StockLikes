@@ -139,12 +139,39 @@ app.get('/games', function(req, res, next) {
   res.render('games', context);
 });
 
+// GENRES PAGE - GET
 app.get('/genres', function(req, res, next) {
   var context = {
     title: "Stock Likes - Genres"
   };
-  res.render('genres', context);
+ 
+   let sqlShow = "SELECT category FROM genre";
+  mysql.pool.query(sqlShow, function(err, rows, fields) {
+    if(err) throw err;
+    context.genre = rows;
+    res.render('genres', context);
+  });
 });
+
+
+
+// GENRES PAGE - POST
+app.post('/genres', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - Genres"
+  };
+  let sqlInsert = "INSERT INTO genre (category) VALUES (?)";
+  let insertParams = [req.body.category];
+
+  mysql.pool.query(sqlInsert, insertParams, function(err, result) {
+    // Show results of INSERT in console
+    if(err) throw err;
+    console.log("Number of records inserted: " + result.affectedRows);
+    // Populate database to table
+    res.redirect('/genres');
+  });
+});
+
 
 app.use(function(req,res){
   res.status(404);

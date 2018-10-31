@@ -12,9 +12,9 @@
         <th>Genre</th> 
     </thead> 
     <tbody> 
-        \{{#each genre}} 
+        {{#each genre}} 
         <tr> 
-            <td>\{{category}}</td> 
+            <td>{{category}}</td> 
             <td>
                 <a class="btn btn-info" href="/genres/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                 <button class="btn btn-danger" onclick="deleteCompany({{id}})">
@@ -22,7 +22,7 @@
                 </button>
             </td>
         </tr> 
-        \{{/each}} 
+        {{/each}} 
     </tbody> 
 </table> 
 
