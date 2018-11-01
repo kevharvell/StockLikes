@@ -112,7 +112,7 @@ app.get('/twitters', function(req, res, next) {
     context.gaming_company = rows;
 
     //Populate Current Twitter Pages Table
-    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.url, twitter.date, twitter.buzz " 
+    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date, twitter.buzz " 
                      + "FROM gaming_company "
                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
     mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
@@ -121,34 +121,6 @@ app.get('/twitters', function(req, res, next) {
       res.render('twitters', context);
     });
   });
-
-  
-
-
-
-  // Scrape Twitter for buzz factor: sum of likes, retweets, and comments
-  /*let url = `https://twitter.com/NintendoAmerica`;
-  axios({
-      method: 'get',
-      url
-  })
-  .then(function (response) {
-      let $ = cheerio.load(response.data);
-      var likes = [];
-      var buzzCount = 0;
-      $(".ProfileTweet-actionCount").each((i, elem) => {
-          likes[i] = parseInt(elem.attribs["data-tweet-stat-count"]);
-          if(!Number.isNaN(likes[i])) {
-            buzzCount += likes[i];
-          }
-      });
-      context.buzzCount = buzzCount;
-      res.render('twitters', context);
-  })
-
-  .catch(function (error) {
-      console.log(error);
-  });*/
 });
 
 // TWITTERS PAGE - POST
@@ -187,6 +159,14 @@ app.post('/twitters', function(req, res, next) {
   .catch(function (error) {
       console.log(error);
       res.redirect('/twitters');
+  });
+});
+
+// TWITTERS PAGE - DELETE
+app.delete('/twitters/delete/:id', (req, res, next) => {
+  mysql.pool.query("DELETE FROM twitter WHERE id = ?", [req.params.id], (err, result) => {
+    if(err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
   });
 });
 
@@ -283,13 +263,4 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
-
-/************************************************************************
-* twitterScraper(url)
-* twitterScraper scrapes gaming company Twitter page summing up likes, 
-* retweets, and comments in order to create a "buzz" factor
-*************************************************************************/
-function twitterScraper(url) {
-
-}
 
