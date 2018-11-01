@@ -71,24 +71,21 @@ app.get('/stocks', function(req, res, next) {
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
     if(err) throw err;
     context.gaming_company = rows;
+  });
 
-    //Populate Current Stocks Table
-    let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.date, stock.price_close " 
-                     + "FROM gaming_company "
-                     + "INNER JOIN stock ON gaming_company.id = stock.companyID";
-    mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-      if(err) throw err;
-      context.stock = rows;
-      res.render('stocks', context);
-    });
+  //Populate Current Stocks Table
+  let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.date, stock.price_close " 
+                   + "FROM gaming_company "
+                   + "INNER JOIN stock ON gaming_company.id = stock.companyID";
+  mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
+    if(err) throw err;
+    context.stock = rows;
+    res.render('stocks', context);
   });
 });
 
 // STOCKS PAGE - POST
 app.post('/stocks', function(req, res, next) {
-  var context = {
-    title: "Stock Likes - Stocks"
-  };
   let sqlInsert = "INSERT INTO stock (ticker, date, price_close, companyID) VALUES (?, ?, ?, ?)";
   let insertParams = [req.body.tickerInput, req.body.dateInput, req.body.price_closeInput, req.body.gaming_companyInput];
 
@@ -101,12 +98,36 @@ app.post('/stocks', function(req, res, next) {
   });
 });
 
+
 // TWITTERS PAGE - GET
 app.get('/twitters', function(req, res, next) {
   var context = {
     title: "Stock Likes - Twitter Pages",
   };
-  let url = `https://twitter.com/NintendoAmerica`;
+
+  // Populate Gaming Company Drop-down menu
+  let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
+  mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+    if(err) throw err;
+    context.gaming_company = rows;
+
+    //Populate Current Twitter Pages Table
+    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.url, twitter.date, twitter.buzz " 
+                     + "FROM gaming_company "
+                     + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
+    mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
+      if(err) throw err;
+      context.twitter = rows;
+      res.render('twitters', context);
+    });
+  });
+
+  
+
+
+
+  // Scrape Twitter for buzz factor: sum of likes, retweets, and comments
+  /*let url = `https://twitter.com/NintendoAmerica`;
   axios({
       method: 'get',
       url
@@ -127,9 +148,46 @@ app.get('/twitters', function(req, res, next) {
 
   .catch(function (error) {
       console.log(error);
-  });
+  });*/
+});
 
-  //res.render('twitters', context);
+// TWITTERS PAGE - POST
+app.post('/twitters', function(req, res, next) {
+  //console.log(req.body);
+  let url = req.body.urlInput;
+  var buzzCount = 0;
+  axios({
+      method: 'get',
+      url
+  })
+  .then(function (response) {
+        let $ = cheerio.load(response.data);
+        var likes = [];
+        $(".ProfileTweet-actionCount").each((i, elem) => {
+            likes[i] = parseInt(elem.attribs["data-tweet-stat-count"]);
+            if(!Number.isNaN(likes[i])) {
+              buzzCount += likes[i];
+            }
+        });
+  })
+
+  .then(function(response) {
+    let sqlInsert = "INSERT INTO twitter (url, date, buzz, companyID) VALUES (?, ?, ?, ?)";
+    let insertParams = [req.body.urlInput, req.body.dateInput, buzzCount, req.body.gaming_companyInput];
+
+    mysql.pool.query(sqlInsert, insertParams, function(err, result) {
+      // Show results of INSERT in console
+      if(err) throw err;
+      console.log("Number of records inserted: " + result.affectedRows);
+      // Populate database to table
+      res.redirect('/twitters');
+    });
+  })
+
+  .catch(function (error) {
+      console.log(error);
+      res.redirect('/twitters');
+  });
 });
 
 
@@ -138,14 +196,14 @@ app.get('/games', function(req, res, next) {
   var context = {
     title: "Stock Likes - Games"
   };
-  //Dropdown for gaming compant
+  //Dropdown for gaming company
   let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
     if(err) throw err;
     context.gaming_company = rows;
      //dropdown for genre
    let sqlShowComps = "SELECT id, category FROM genre";
-  mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
     if(err) throw err;
     context.genre = rows; 
 
@@ -167,9 +225,6 @@ app.get('/games', function(req, res, next) {
 
 // GAMES PAGE - POST
 app.post('/games', function(req, res, next) {
-  var context = {
-    title: "Stock Likes - Games"
-  };
   let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?)";
   let insertParams = [req.body.gameNameInput, req.body.dateInput, req.body.ratingInput, req.body.gaming_companyInput];
 
@@ -201,9 +256,6 @@ app.get('/genres', function(req, res, next) {
 
 // GENRES PAGE - POST
 app.post('/genres', function(req, res, next) {
-  var context = {
-    title: "Stock Likes - Genres"
-  };
   let sqlInsert = "INSERT INTO genre (category) VALUES (?)";
   let insertParams = [req.body.category];
 
@@ -231,3 +283,13 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
+
+/************************************************************************
+* twitterScraper(url)
+* twitterScraper scrapes gaming company Twitter page summing up likes, 
+* retweets, and comments in order to create a "buzz" factor
+*************************************************************************/
+function twitterScraper(url) {
+
+}
+

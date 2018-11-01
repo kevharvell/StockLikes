@@ -1,14 +1,14 @@
 <h1>Twitter Pages</h1>
 <h3>Add a new gaming company Twitter Page:</h3>
 <form id="addtwitter" action="/twitters" method="post">
-    Gaming Company: <select class="m-2" name="gaming_company" required>
-        \{{#each gaming_company}}
-            <option value="{{id}}">\{{comp_name}}</option>
-        \{{/each}}
+    Gaming Company: <select class="m-2" name="gaming_companyInput" required>
+        {{#each gaming_company}}
+            <option value="{{id}}">{{comp_name}}</option>
+        {{/each}}
     </select> <br>
-    URL: <input type="text" class="m-2" name="url"><br>
-    Date: <input type="date" class="m-2" name="date" required><br>
-    Buzz Factor: <input type="number" class="m-2" name="buzz" value="{{buzzCount}}" readonly><br>
+    Company Twitter URL: <input type="text" id="urlInput" class="m-2" name="urlInput" placeholder="EX: https://twitter.com/NintendoAmerica" size="50"> <br>
+    Date: <input type="date" class="m-2" name="dateInput" required><br>
+    <strong>Buzz Factor will be found automagically based on the Twitter URL provided above.</strong><br>
     <br>
     <input type="submit" value="Submit">
 </form>
@@ -22,12 +22,12 @@
         <th>Buzz Factor</th>
     </thead> 
     <tbody> 
-        \{{#each twitter}} 
+        {{#each twitter}} 
             <tr> 
-                <td>\{{companyID}}</td>
-                <td>\{{url}}</td>
-                <td>\{{date}}</td>
-                <td>\{{buzz}}</td> 
+                <td>{{comp_name}}</td>
+                <td>{{url}}</td>
+                <td>{{date}}</td>
+                <td>{{buzz}}</td> 
                 <td>
                     <a class="btn btn-info" href="/twitters/{{id}}" role="button"><i class="fas fa-edit"></i></a>
                     <button class="btn btn-danger" onclick="deleteCompany({{id}})">
@@ -35,7 +35,7 @@
                     </button>
                 </td>
             </tr> 
-        \{{/each}} 
+        {{/each}} 
     </tbody> 
 </table> 
 
