@@ -229,7 +229,7 @@ app.get('/games', function(req, res, next) {
 
 // GAMES PAGE - POST
 app.post('/games', function(req, res, next) {
-  let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?)";
+  let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?) ";
   let insertParams = [req.body.gameNameInput, req.body.dateInput, req.body.ratingInput, req.body.gaming_companyInput];
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
