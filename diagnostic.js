@@ -38,7 +38,7 @@ app.get('/gaming-companies', function(req, res, next) {
     title: "Stock Likes - Gaming Companies"
   };
   // Populate database to table
-  let sqlShow = "SELECT comp_name FROM gaming_company";
+  let sqlShow = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShow, function(err, rows, fields) {
     if(err) throw err;
     context.gaming_company = rows;
@@ -60,6 +60,14 @@ app.post('/gaming-companies', function(req, res, next) {
   });
 });
 
+// GAMING COMPANIES PAGE - DELETE
+app.delete('/gaming-companies/delete/:id', (req, res, next) => {
+  mysql.pool.query("DELETE FROM gaming_company WHERE id = ?", [req.params.id], (err, result) => {
+    if(err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+});
+
 // STOCKS PAGE - GET
 app.get('/stocks', function(req, res, next) {
   var context = {
@@ -71,16 +79,15 @@ app.get('/stocks', function(req, res, next) {
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
     if(err) throw err;
     context.gaming_company = rows;
-  });
-
-  //Populate Current Stocks Table
-  let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.date, stock.price_close " 
-                   + "FROM gaming_company "
-                   + "INNER JOIN stock ON gaming_company.id = stock.companyID";
-  mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
-    if(err) throw err;
-    context.stock = rows;
-    res.render('stocks', context);
+    //Populate Current Stocks Table
+    let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date, stock.price_close " 
+                      + "FROM gaming_company "
+                      + "INNER JOIN stock ON gaming_company.id = stock.companyID";
+    mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
+      if(err) throw err;
+      context.stock = rows;
+      res.render('stocks', context);
+    });
   });
 });
 
@@ -95,6 +102,14 @@ app.post('/stocks', function(req, res, next) {
     console.log("Number of records inserted: " + result.affectedRows);
     // Populate database to table
     res.redirect('/stocks');
+  });
+});
+
+// STOCKS PAGE - DELETE
+app.delete('/stocks/delete/:id', (req, res, next) => {
+  mysql.pool.query("DELETE FROM stock WHERE id = ?", [req.params.id], (err, result) => {
+    if(err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
   });
 });
 
@@ -182,26 +197,25 @@ app.get('/games', function(req, res, next) {
     if(err) throw err;
     context.gaming_company = rows;
      //dropdown for genre
-   let sqlShowComps = "SELECT id, category FROM genre";
-   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-    if(err) throw err;
-    context.genre = rows; 
-
-    //Populate Current Games Table
-    let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.game_name, genre.category, game.release_date, game.rating " 
-                     + "FROM gaming_company "
-                     + "INNER JOIN game ON gaming_company.id = game.companyID "
-                     + "INNER JOIN game_genre ON game.id = gameID "
-                     + "INNER JOIN genre ON game_genre.genreID = genre.id";
+    let sqlShowComps = "SELECT id, category FROM genre";
     mysql.pool.query(sqlShowComps, function(err, rows, fields) {
       if(err) throw err;
-      context.game = rows;
-      res.render('games', context);
+      context.genre = rows; 
+
+      //Populate Current Games Table
+      let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, game.release_date, game.rating " 
+                       + "FROM gaming_company "
+                       + "INNER JOIN game ON gaming_company.id = game.companyID "
+                       + "INNER JOIN game_genre ON game.id = gameID "
+                       + "INNER JOIN genre ON game_genre.genreID = genre.id";
+      mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+        if(err) throw err;
+        context.game = rows;
+        res.render('games', context);
+      });
     });
   });
 });
-  });
-
 
 // GAMES PAGE - POST
 app.post('/games', function(req, res, next) {
@@ -217,6 +231,15 @@ app.post('/games', function(req, res, next) {
   });
 });
 
+/* Have to figure out how to delete from the game_genre table when we delete from games
+// GAMES PAGE - DELETE
+app.delete('/games/delete/:id', (req, res, next) => {
+  mysql.pool.query("DELETE FROM game WHERE id = ?", [req.params.id], (err, result) => {
+    if(err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+});
+*/
 
 // GENRES PAGE - GET
 app.get('/genres', function(req, res, next) {
@@ -224,15 +247,13 @@ app.get('/genres', function(req, res, next) {
     title: "Stock Likes - Genres"
   };
  
-   let sqlShow = "SELECT category FROM genre";
+   let sqlShow = "SELECT id, category FROM genre";
   mysql.pool.query(sqlShow, function(err, rows, fields) {
     if(err) throw err;
     context.genre = rows;
     res.render('genres', context);
   });
 });
-
-
 
 // GENRES PAGE - POST
 app.post('/genres', function(req, res, next) {
@@ -245,6 +266,14 @@ app.post('/genres', function(req, res, next) {
     console.log("Number of records inserted: " + result.affectedRows);
     // Populate database to table
     res.redirect('/genres');
+  });
+});
+
+// GENRES PAGE - DELETE
+app.delete('/genres/delete/:id', (req, res, next) => {
+  mysql.pool.query("DELETE FROM genre WHERE id = ?", [req.params.id], (err, result) => {
+    if(err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
   });
 });
 
