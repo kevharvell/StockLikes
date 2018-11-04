@@ -21,7 +21,17 @@ app.get('/', function(req, res, next) {
   var context = {
     title: "Stock Likes Database"
   };
-  res.render('home', context);
+    let sqlShow = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.price_close, twitter.url, twitter.buzz, game.game_name " 
+                      + "FROM gaming_company "
+                      + "INNER JOIN stock ON gaming_company.id = stock.companyID "
+                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID "
+                      + "INNER JOIN game ON gaming_company.id = game.companyID";
+    mysql.pool.query(sqlShow, function(err, rows, fields) {
+      if(err) throw err;
+      context.gaming_company = rows;
+    res.render('home', context);
+    });
+  
 });
 
 // ABOUT PAGE
