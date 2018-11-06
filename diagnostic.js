@@ -216,11 +216,12 @@ app.get('/games', function(req, res, next) {
       let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, game.release_date, game.rating " 
                        + "FROM gaming_company "
                        + "INNER JOIN game ON gaming_company.id = game.companyID "
-                       + "INNER JOIN game_genre ON game.id = gameID "
+                       + "INNER JOIN game_genre ON game.id = game_genre.gameID "
                        + "INNER JOIN genre ON game_genre.genreID = genre.id";
       mysql.pool.query(sqlShowComps, function(err, rows, fields) {
         if(err) throw err;
         context.game = rows;
+        console.log(context.game);
         res.render('games', context);
       });
     });
@@ -229,15 +230,23 @@ app.get('/games', function(req, res, next) {
 
 // GAMES PAGE - POST
 app.post('/games', function(req, res, next) {
-  let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?) ";
+  let sqlInsert = "INSERT INTO game (game_name, release_date, rating, companyID) VALUES (?, ?, ?, ?);";
   let insertParams = [req.body.gameNameInput, req.body.dateInput, req.body.ratingInput, req.body.gaming_companyInput];
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
     // Show results of INSERT in console
     if(err) throw err;
     console.log("Number of records inserted: " + result.affectedRows);
-    // Populate database to table
-    res.redirect('/games');
+    let game_id = result.insertId;
+    let sqlInsert2 = "INSERT IGNORE INTO game_genre (gameID, genreID) VALUES (?, ?);";
+    let insertParams2 = [game_id, req.body.genreInput];
+    mysql.pool.query(sqlInsert2, insertParams2, function(err, result) {
+      // Show results of INSERT in console
+      if(err) throw err;
+      console.log("Number of records inserted: " + result.affectedRows);
+      // Populate database to table
+      res.redirect('/games');
+    });
   });
 });
 

@@ -63,6 +63,7 @@ DROP TABLE IF EXISTS `game_genre`;
 CREATE TABLE `game_genre` (
 	`gameID` int(11) NOT NULL,
 	`genreID` int(11) NOT NULL,
+	PRIMARY KEY(`gameID`, `genreID`),
 	FOREIGN KEY (`gameID`) REFERENCES `game` (`id`),
 	FOREIGN KEY (`genreID`) REFERENCES `genre` (`id`)
 ) ENGINE=InnoDB;
