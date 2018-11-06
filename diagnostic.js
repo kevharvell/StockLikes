@@ -210,6 +210,7 @@ app.get('/games', function(req, res, next) {
     let sqlShowComps = "SELECT id, category FROM genre";
     mysql.pool.query(sqlShowComps, function(err, rows, fields) {
       if(err) throw err;
+      //console.log(rows);
       context.genre = rows; 
 
       //Populate Current Games Table
@@ -221,7 +222,7 @@ app.get('/games', function(req, res, next) {
       mysql.pool.query(sqlShowComps, function(err, rows, fields) {
         if(err) throw err;
         context.game = rows;
-        console.log(context.game);
+        //console.log(context.game);
         res.render('games', context);
       });
     });
@@ -250,15 +251,30 @@ app.post('/games', function(req, res, next) {
   });
 });
 
-/* Have to figure out how to delete from the game_genre table when we delete from games
+
 // GAMES PAGE - DELETE
 app.delete('/games/delete/:id', (req, res, next) => {
-  mysql.pool.query("DELETE FROM game WHERE id = ?", [req.params.id], (err, result) => {
+  let sqlShowComps = "SELECT game_genre.gameID, game_genre.genreID FROM game_genre WHERE game_genre.gameID = " + req.params.id;
+  mysql.pool.query(sqlShowComps, function(err, rows, fields) {
     if(err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
+    console.log(rows);
+    genreID = rows[0].genreID;
+    console.log(genreID);
+    let sqlDelete = "DELETE FROM game_genre WHERE gameID = ? AND genreID = ?;"
+    let deleteParams = [req.params.id, genreID];
+    mysql.pool.query(sqlDelete, deleteParams, (err, result) => {
+      if(err) throw err;
+      console.log("Number of records deleted: " + result.affectedRows);
+      let sqlDelete2 = "DELETE FROM game WHERE id = ?;"
+      let deleteParams2 = [req.params.id];
+      mysql.pool.query(sqlDelete2, deleteParams2, (err, result) => {
+        if(err) throw err;
+        console.log("Number of records deleted: " + result.affectedRows);
+      });
+    });
   });
 });
-*/
+
 
 // GENRES PAGE - GET
 app.get('/genres', function(req, res, next) {

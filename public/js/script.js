@@ -27,7 +27,7 @@ function deleteTwitter(id) {
 
 function deleteGame(id) {
 	// Send Delete request to database with proper id
-	fetch('/games/delete/' + id, {
+	fetch('/games/delete/' + id,  {
 		method: "DELETE"
 	})
 	// Refresh browser
