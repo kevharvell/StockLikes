@@ -337,6 +337,28 @@ app.post('/genres/:id', (req, res) => {
   });
 });
 
+// SEARCH PAGE - POST
+app.post('/search', function(req, res, next) {
+  var context = {
+    title: "Stock Likes - Search Results"
+  };
+  // Populate database to table
+      let sqlShow = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.price_close, twitter.url, twitter.buzz, game.game_name " 
+                      + "FROM gaming_company "
+                      + "INNER JOIN stock ON gaming_company.id = stock.companyID "
+                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID "
+                      + "INNER JOIN game ON gaming_company.id = game.companyID "
+                      + "WHERE gaming_company.comp_name=?";
+      let insertParams = [req.body.search];
+  mysql.pool.query(sqlShow, insertParams, function(err, rows, fields) {
+    if(err) throw err;
+    context.gaming_company = rows;
+    res.render('search', context);
+  });
+});
+
+
+
 
 app.use(function(req,res){
   res.status(404);

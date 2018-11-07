@@ -1,0 +1,27 @@
+<!-- Jumbotron -->  
+<h1>Gaming Stock Likes Database</h1>
+<h3>Gaming Companies search results:</h3>
+
+
+<table class="table table-dark bg-secondary">
+    <thead> 
+        <th>Company Name</th> 
+        <th>Ticker Symbol</th>
+        <th>Latest Stock Price</th>
+        <th>Twitter URL</th>
+        <th>Latest Buzz Factor</th>
+        <th>Games</th>
+    </thead> 
+    <tbody> 
+        {{#each gaming_company}}
+        <tr> 
+            <td>{{comp_name}}</td>
+            <td>{{ticker}}</td> 
+            <td>{{price_close}}</td> 
+            <td>{{url}}</td> 
+            <td>{{buzz}}</td>  
+            <td>{{game_name}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
