@@ -13,10 +13,12 @@
     </thead> 
     <tbody> 
         {{#each genre}} 
-        <tr> 
+        <tr id="tr{{id}}"> 
             <td>{{category}}</td> 
             <td>
-                <a class="btn btn-info" href="/genres/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-info" onclick="changeGenreForm({{id}})">
+                    <i class="fas fa-edit"></i>
+                </button>
                 <button class="btn btn-danger" onclick="deleteGenre({{id}})">
                     <i class="fas fa-trash-alt"></i>
                 </button>

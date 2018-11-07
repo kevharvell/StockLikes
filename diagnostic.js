@@ -297,18 +297,43 @@ app.post('/genres', function(req, res, next) {
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
     // Show results of INSERT in console
-    if(err) throw err;
-    console.log("Number of records inserted: " + result.affectedRows);
-    // Populate database to table
-    res.redirect('/genres');
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      console.log("Number of records inserted: " + result.affectedRows);
+      // Populate database to table
+      res.redirect('/genres');
+    }
   });
 });
 
 // GENRES PAGE - DELETE
 app.delete('/genres/delete/:id', (req, res, next) => {
   mysql.pool.query("DELETE FROM genre WHERE id = ?", [req.params.id], (err, result) => {
-    if(err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
+    if(err) {
+      console.log(err);
+      res.status(400);
+      res.end();
+    } else {
+      console.log("Number of records deleted: " + result.affectedRows);
+    }
+  });
+});
+
+// GENRES PAGE - UPDATE
+app.post('/genres/:id', (req, res) => {
+  let sql = "UPDATE genre SET category = ? WHERE id = ?";
+  let insertParams = [req.body.category, req.params.id];
+  mysql.pool.query(sql, insertParams, (err, result, fields) => {
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      res.redirect('/genres');
+    }
   });
 });
 

@@ -55,7 +55,7 @@ CREATE TABLE `game` (
 DROP TABLE IF EXISTS `genre`;
 CREATE TABLE `genre` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`category` varchar(40) NOT NULL,
+	`category` varchar(40) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
