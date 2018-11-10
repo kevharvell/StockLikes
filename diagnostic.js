@@ -90,7 +90,7 @@ app.get('/stocks', function(req, res, next) {
     if(err) throw err;
     context.gaming_company = rows;
     //Populate Current Stocks Table
-    let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date, stock.price_close " 
+    let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date_recorded, stock.price_close " 
                       + "FROM gaming_company "
                       + "INNER JOIN stock ON gaming_company.id = stock.companyID";
     mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
@@ -103,7 +103,7 @@ app.get('/stocks', function(req, res, next) {
 
 // STOCKS PAGE - POST
 app.post('/stocks', function(req, res, next) {
-  let sqlInsert = "INSERT INTO stock (ticker, date, price_close, companyID) VALUES (?, ?, ?, ?)";
+  let sqlInsert = "INSERT INTO stock (ticker, date_recorded, price_close, companyID) VALUES (?, ?, ?, ?)";
   let insertParams = [req.body.tickerInput, req.body.dateInput, req.body.price_closeInput, req.body.gaming_companyInput];
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
@@ -137,7 +137,7 @@ app.get('/twitters', function(req, res, next) {
     context.gaming_company = rows;
 
     //Populate Current Twitter Pages Table
-    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date, twitter.buzz " 
+    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date_recorded, twitter.buzz " 
                      + "FROM gaming_company "
                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
     mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
@@ -169,7 +169,7 @@ app.post('/twitters', function(req, res, next) {
   })
 
   .then(function(response) {
-    let sqlInsert = "INSERT INTO twitter (url, date, buzz, companyID) VALUES (?, ?, ?, ?)";
+    let sqlInsert = "INSERT INTO twitter (url, date_recorded, buzz, companyID) VALUES (?, ?, ?, ?)";
     let insertParams = [req.body.urlInput, req.body.dateInput, buzzCount, req.body.gaming_companyInput];
 
     mysql.pool.query(sqlInsert, insertParams, function(err, result) {
