@@ -182,6 +182,8 @@ app.post('/twitters', function(req, res, next) {
   })
 
   .catch(function (error) {
+      res.write("Invalid Twitter URL");
+      res.end()
       console.log(error);
       res.redirect('/twitters');
   });

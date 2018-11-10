@@ -13,7 +13,7 @@ Last Update: 10/26/2018
 DROP TABLE IF EXISTS `gaming_company`;
 CREATE TABLE `gaming_company`(
 	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`comp_name` varchar(80) NOT NULL,
+	`comp_name` varchar(80) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
