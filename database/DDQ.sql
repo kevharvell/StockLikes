@@ -72,6 +72,7 @@ CREATE TABLE `game_genre` (
 INSERT INTO `gaming_company` (comp_name) values ("Nintendo");
 INSERT INTO `gaming_company` (comp_name) values ("EA");
 INSERT INTO `gaming_company` (comp_name) values ("Activision");
+INSERT INTO `gaming_company` (comp_name) values ("RockStar Games");
 
 -- Insert stock prices
 INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) 
@@ -90,6 +91,12 @@ INSERT INTO `stock` (ticker, date_recorded, price_close, companyID)
 	VALUES ("ATVI", "2018-11-20", 49.06, (
 		SELECT id FROM gaming_company 
 		WHERE comp_name = "Activision"	
+	)
+);
+INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) 
+	VALUES ("TTWO", "2018-11-20", 104.03, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "RockStar Games"	
 	)
 );
 
@@ -112,6 +119,12 @@ VALUES ("2018-11-20", "https://twitter.com/Activision", 52365, (
 		WHERE comp_name = "Activision"	
 	)
 ); 
+INSERT INTO `twitter` (date_recorded, url, buzz, companyID) 
+VALUES ("2018-11-20", "https://twitter.com/rockstargames", 238055, (
+	SELECT id FROM gaming_company 
+		WHERE comp_name = "RockStar Games"	
+	)
+); 
 
 -- Insert games
 INSERT INTO `game` (game_name, release_date, rating, companyID) 
@@ -132,10 +145,18 @@ VALUES ("Call of Duty: WWII", "2018-11-20", 6, (
 		WHERE comp_name = "Activision"	
 	)
 );
+INSERT INTO `game` (game_name, release_date, rating, companyID) 
+VALUES ("Grand Theft Auto: V", "2013-09-17", 6, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "RockStar Games"	
+	)
+);
 
 -- Insert genres
 INSERT INTO `genre` (category) values ("Party");
 INSERT INTO `genre` (category) values ("First Person Shooter");
+INSERT INTO `genre` (category) values ("Action");
+INSERT INTO `genre` (category) values ("Adventure");
 
 -- Insert game_genre links
 INSERT INTO `game_genre` (gameID, genreID) 
@@ -166,5 +187,25 @@ VALUES ((
 	(
 		SELECT id FROM genre
 		WHERE category = "First Person Shooter"
+	)
+);
+INSERT INTO `game_genre` (gameID, genreID) 
+VALUES ((
+		SELECT id FROM game
+		WHERE game_name = "Grand Theft Auto: V"
+	), 
+	(
+		SELECT id FROM genre
+		WHERE category = "Action"
+	)
+);
+INSERT INTO `game_genre` (gameID, genreID) 
+VALUES ((
+		SELECT id FROM game
+		WHERE game_name = "Grand Theft Auto: V"
+	), 
+	(
+		SELECT id FROM genre
+		WHERE category = "Adventure"
 	)
 );
