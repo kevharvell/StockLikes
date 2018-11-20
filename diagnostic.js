@@ -464,9 +464,6 @@ app.post('/search', function(req, res, next) {
   });
 });
 
-
-
-
 app.use(function(req,res){
   res.status(404);
   res.render('404');
