@@ -24,9 +24,9 @@ CREATE TABLE `stock`(
 	`date_recorded` date NOT NULL,
 	`price_close` DECIMAL(8, 2),
 	`companyID` int(11) NOT NULL,
-	UNIQUE (date_recorded),
+	UNIQUE (companyID, date_recorded),
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`)
+	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `twitter`;
@@ -36,9 +36,9 @@ CREATE TABLE `twitter` (
 	`url` varchar(80),
 	`buzz` int(20),
 	`companyID` int(11) NOT NULL,
-	UNIQUE (date_recorded),
+	UNIQUE (companyID, date_recorded),
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`)
+	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `game`;
@@ -49,7 +49,7 @@ CREATE TABLE `game` (
 	`rating` tinyint(3),
 	`companyID` int(11) NOT NULL,
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`)
+	FOREIGN KEY (`companyID`) REFERENCES `gaming_company` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS `genre`;
@@ -64,14 +64,107 @@ CREATE TABLE `game_genre` (
 	`gameID` int(11) NOT NULL,
 	`genreID` int(11) NOT NULL,
 	PRIMARY KEY(`gameID`, `genreID`),
-	FOREIGN KEY (`gameID`) REFERENCES `game` (`id`),
-	FOREIGN KEY (`genreID`) REFERENCES `genre` (`id`)
+	FOREIGN KEY (`gameID`) REFERENCES `game` (`id`) ON DELETE CASCADE,
+	FOREIGN KEY (`genreID`) REFERENCES `genre` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
+-- Insert gaming companies
 INSERT INTO `gaming_company` (comp_name) values ("Nintendo");
-INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) values ("NTDOY", "2018-10-5", 45.15, 1);
-INSERT INTO `twitter` (date_recorded, url, buzz, companyID) values ("2018-10-11", "https://twitter.com/NintendoAmerica", 120825, 1); 
-INSERT INTO `game` (game_name, release_date, rating, companyID) values ("Super Mario Party", "2018-10-5", 2, 1);
+INSERT INTO `gaming_company` (comp_name) values ("EA");
+INSERT INTO `gaming_company` (comp_name) values ("Activision");
+
+-- Insert stock prices
+INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) 
+	VALUES ("NTDOY", "2018-10-5", 45.15, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "Nintendo"	
+	)
+);
+INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) 
+	VALUES ("EA", "2018-11-20", 82.27, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "EA"	
+	)
+);
+INSERT INTO `stock` (ticker, date_recorded, price_close, companyID) 
+	VALUES ("ATVI", "2018-11-20", 49.06, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "Activision"	
+	)
+);
+
+-- Insert Twitters
+INSERT INTO `twitter` (date_recorded, url, buzz, companyID) 
+VALUES ("2018-10-11", "https://twitter.com/NintendoAmerica", 120825, (
+	SELECT id FROM gaming_company 
+		WHERE comp_name = "Nintendo"	
+	)
+); 
+INSERT INTO `twitter` (date_recorded, url, buzz, companyID) 
+VALUES ("2018-11-20", "https://twitter.com/EA", 23749, (
+	SELECT id FROM gaming_company 
+		WHERE comp_name = "EA"	
+	)
+); 
+INSERT INTO `twitter` (date_recorded, url, buzz, companyID) 
+VALUES ("2018-11-20", "https://twitter.com/Activision", 52365, (
+	SELECT id FROM gaming_company 
+		WHERE comp_name = "Activision"	
+	)
+); 
+
+-- Insert games
+INSERT INTO `game` (game_name, release_date, rating, companyID) 
+VALUES ("Super Mario Party", "2018-10-5", 2, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "Nintendo"	
+	)
+);
+INSERT INTO `game` (game_name, release_date, rating, companyID) 
+VALUES ("Battlefield V", "2018-11-20", 10, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "EA"	
+	)
+);
+INSERT INTO `game` (game_name, release_date, rating, companyID) 
+VALUES ("Call of Duty: WWII", "2018-11-20", 6, (
+		SELECT id FROM gaming_company 
+		WHERE comp_name = "Activision"	
+	)
+);
+
+-- Insert genres
 INSERT INTO `genre` (category) values ("Party");
-INSERT INTO `game_genre` (gameID, genreID) values (1, 1);
+INSERT INTO `genre` (category) values ("First Person Shooter");
+
+-- Insert game_genre links
+INSERT INTO `game_genre` (gameID, genreID) 
+VALUES ((
+		SELECT id FROM game
+		WHERE game_name = "Super Mario Party"
+	), 
+	(
+		SELECT id FROM genre
+		WHERE category = "Party"
+	)
+);
+INSERT INTO `game_genre` (gameID, genreID) 
+VALUES ((
+		SELECT id FROM game
+		WHERE game_name = "Battlefield V"
+	), 
+	(
+		SELECT id FROM genre
+		WHERE category = "First Person Shooter"
+	)
+);
+INSERT INTO `game_genre` (gameID, genreID) 
+VALUES ((
+		SELECT id FROM game
+		WHERE game_name = "Call of Duty: WWII"
+	), 
+	(
+		SELECT id FROM genre
+		WHERE category = "First Person Shooter"
+	)
+);
