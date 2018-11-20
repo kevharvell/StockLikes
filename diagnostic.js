@@ -23,13 +23,18 @@ app.get('/', function(req, res, next) {
   };
     let sqlShow = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.price_close, twitter.url, twitter.buzz, game.game_name " 
                       + "FROM gaming_company "
-                      + "INNER JOIN stock ON gaming_company.id = stock.companyID "
-                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID "
-                      + "INNER JOIN game ON gaming_company.id = game.companyID";
+                      + "LEFT JOIN stock ON gaming_company.id = stock.companyID "
+                      + "LEFT JOIN twitter ON gaming_company.id = twitter.companyID "
+                      + "LEFT JOIN game ON gaming_company.id = game.companyID";
     mysql.pool.query(sqlShow, function(err, rows, fields) {
-      if(err) throw err;
-      context.gaming_company = rows;
-    res.render('home', context);
+      if(err) {
+        console.log(JSON.stringify(err));
+        res.write(JSON.stringify(err));
+        res.end();
+      } else {
+        context.gaming_company = rows;
+        res.render('home', context);
+      }
     });
   
 });
@@ -50,9 +55,14 @@ app.get('/gaming-companies', function(req, res, next) {
   // Populate database to table
   let sqlShow = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShow, function(err, rows, fields) {
-    if(err) throw err;
-    context.gaming_company = rows;
-    res.render('gaming-companies', context);
+    if(err) {
+        console.log(JSON.stringify(err));
+        res.write(JSON.stringify(err));
+        res.end();
+    } else {
+        context.gaming_company = rows;
+        res.render('gaming-companies', context);
+    }
   });
 });
 
@@ -63,18 +73,28 @@ app.post('/gaming-companies', function(req, res, next) {
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
     // Show results of INSERT in console
-    if(err) throw err;
-    console.log("Number of records inserted: " + result.affectedRows);
-    // Populate database to table
-    res.redirect('/gaming-companies');
+    if(err) {
+        console.log(JSON.stringify(err));
+        res.write(JSON.stringify(err));
+        res.end();
+    } else {
+      console.log("Number of records inserted: " + result.affectedRows);
+      // Populate database to table
+      res.redirect('/gaming-companies');
+    }
   });
 });
 
 // GAMING COMPANIES PAGE - DELETE
 app.delete('/gaming-companies/delete/:id', (req, res, next) => {
   mysql.pool.query("DELETE FROM gaming_company WHERE id = ?", [req.params.id], (err, result) => {
-    if(err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
+    if(err) {
+        console.log(JSON.stringify(err));
+        res.write(JSON.stringify(err));
+        res.end();
+    } else {
+      console.log("Number of records deleted: " + result.affectedRows);
+    }
   });
 });
 
@@ -87,17 +107,27 @@ app.get('/stocks', function(req, res, next) {
   // Populate Gaming Company Drop-down menu
   let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-    if(err) throw err;
-    context.gaming_company = rows;
-    //Populate Current Stocks Table
-    let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date_recorded, stock.price_close " 
-                      + "FROM gaming_company "
-                      + "INNER JOIN stock ON gaming_company.id = stock.companyID";
-    mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
-      if(err) throw err;
-      context.stock = rows;
-      res.render('stocks', context);
-    });
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      context.gaming_company = rows;
+      //Populate Current Stocks Table
+      let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date_recorded, stock.price_close " 
+                        + "FROM gaming_company "
+                        + "INNER JOIN stock ON gaming_company.id = stock.companyID";
+      mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          context.stock = rows;
+          res.render('stocks', context);
+        }
+      });
+    }
   });
 });
 
@@ -108,18 +138,28 @@ app.post('/stocks', function(req, res, next) {
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
     // Show results of INSERT in console
-    if(err) throw err;
-    console.log("Number of records inserted: " + result.affectedRows);
-    // Populate database to table
-    res.redirect('/stocks');
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      console.log("Number of records inserted: " + result.affectedRows);
+      // Populate database to table
+      res.redirect('/stocks');
+    }
   });
 });
 
 // STOCKS PAGE - DELETE
 app.delete('/stocks/delete/:id', (req, res, next) => {
   mysql.pool.query("DELETE FROM stock WHERE id = ?", [req.params.id], (err, result) => {
-    if(err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      console.log("Number of records deleted: " + result.affectedRows);
+    }
   });
 });
 
@@ -133,18 +173,28 @@ app.get('/twitters', function(req, res, next) {
   // Populate Gaming Company Drop-down menu
   let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-    if(err) throw err;
-    context.gaming_company = rows;
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      context.gaming_company = rows;
 
-    //Populate Current Twitter Pages Table
-    let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date_recorded, twitter.buzz " 
-                     + "FROM gaming_company "
-                     + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
-    mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
-      if(err) throw err;
-      context.twitter = rows;
-      res.render('twitters', context);
-    });
+      //Populate Current Twitter Pages Table
+      let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date_recorded, twitter.buzz " 
+                       + "FROM gaming_company "
+                       + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
+      mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          context.twitter = rows;
+          res.render('twitters', context);
+        }
+      });
+    }
   });
 });
 
@@ -174,10 +224,15 @@ app.post('/twitters', function(req, res, next) {
 
     mysql.pool.query(sqlInsert, insertParams, function(err, result) {
       // Show results of INSERT in console
-      if(err) throw err;
-      console.log("Number of records inserted: " + result.affectedRows);
-      // Populate database to table
-      res.redirect('/twitters');
+      if(err) {
+        console.log(JSON.stringify(err));
+        res.write(JSON.stringify(err));
+        res.end();
+      } else {
+        console.log("Number of records inserted: " + result.affectedRows);
+        // Populate database to table
+        res.redirect('/twitters');
+      }
     });
   })
 
@@ -192,8 +247,13 @@ app.post('/twitters', function(req, res, next) {
 // TWITTERS PAGE - DELETE
 app.delete('/twitters/delete/:id', (req, res, next) => {
   mysql.pool.query("DELETE FROM twitter WHERE id = ?", [req.params.id], (err, result) => {
-    if(err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      console.log("Number of records deleted: " + result.affectedRows);
+    }
   });
 });
 
@@ -206,28 +266,43 @@ app.get('/games', function(req, res, next) {
   //Dropdown for gaming company
   let sqlShowComps = "SELECT id, comp_name FROM gaming_company";
   mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-    if(err) throw err;
-    context.gaming_company = rows;
-     //dropdown for genre
-    let sqlShowComps = "SELECT id, category FROM genre";
-    mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-      if(err) throw err;
-      //console.log(rows);
-      context.genre = rows; 
-
-      //Populate Current Games Table
-      let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, game.release_date, game.rating " 
-                       + "FROM gaming_company "
-                       + "INNER JOIN game ON gaming_company.id = game.companyID "
-                       + "INNER JOIN game_genre ON game.id = game_genre.gameID "
-                       + "INNER JOIN genre ON game_genre.genreID = genre.id";
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      context.gaming_company = rows;
+       //dropdown for genre
+      let sqlShowComps = "SELECT id, category FROM genre";
       mysql.pool.query(sqlShowComps, function(err, rows, fields) {
-        if(err) throw err;
-        context.game = rows;
-        //console.log(context.game);
-        res.render('games', context);
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          //console.log(rows);
+          context.genre = rows; 
+
+          //Populate Current Games Table
+          let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, game.release_date, game.rating " 
+                           + "FROM gaming_company "
+                           + "INNER JOIN game ON gaming_company.id = game.companyID "
+                           + "INNER JOIN game_genre ON game.id = game_genre.gameID "
+                           + "INNER JOIN genre ON game_genre.genreID = genre.id";
+          mysql.pool.query(sqlShowComps, function(err, rows, fields) {
+            if(err) {
+              console.log(JSON.stringify(err));
+              res.write(JSON.stringify(err));
+              res.end();
+            } else {
+              context.game = rows;
+              //console.log(context.game);
+              res.render('games', context);
+            }
+          });
+        }
       });
-    });
+    }
   });
 });
 
@@ -238,18 +313,28 @@ app.post('/games', function(req, res, next) {
 
   mysql.pool.query(sqlInsert, insertParams, function(err, result) {
     // Show results of INSERT in console
-    if(err) throw err;
-    console.log("Number of records inserted: " + result.affectedRows);
-    let game_id = result.insertId;
-    let sqlInsert2 = "INSERT IGNORE INTO game_genre (gameID, genreID) VALUES (?, ?);";
-    let insertParams2 = [game_id, req.body.genreInput];
-    mysql.pool.query(sqlInsert2, insertParams2, function(err, result) {
-      // Show results of INSERT in console
-      if(err) throw err;
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
       console.log("Number of records inserted: " + result.affectedRows);
-      // Populate database to table
-      res.redirect('/games');
-    });
+      let game_id = result.insertId;
+      let sqlInsert2 = "INSERT IGNORE INTO game_genre (gameID, genreID) VALUES (?, ?);";
+      let insertParams2 = [game_id, req.body.genreInput];
+      mysql.pool.query(sqlInsert2, insertParams2, function(err, result) {
+        // Show results of INSERT in console
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          console.log("Number of records inserted: " + result.affectedRows);
+          // Populate database to table
+          res.redirect('/games');
+        }
+      });
+    }
   });
 });
 
@@ -274,11 +359,16 @@ app.get('/genres', function(req, res, next) {
     title: "Stock Likes - Genres"
   };
  
-   let sqlShow = "SELECT id, category FROM genre";
+  let sqlShow = "SELECT id, category FROM genre";
   mysql.pool.query(sqlShow, function(err, rows, fields) {
-    if(err) throw err;
-    context.genre = rows;
-    res.render('genres', context);
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      context.genre = rows;
+      res.render('genres', context);
+    }
   });
 });
 
@@ -343,9 +433,14 @@ app.post('/search', function(req, res, next) {
                       + "WHERE gaming_company.comp_name LIKE ?";
       let insertParams = '%' + [req.body.search] + '%';
   mysql.pool.query(sqlShow, insertParams, function(err, rows, fields) {
-    if(err) throw err;
-    context.gaming_company = rows;
-    res.render('search', context);
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      context.gaming_company = rows;
+      res.render('search', context);
+    }
   });
 });
 

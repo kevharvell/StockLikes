@@ -44,7 +44,7 @@ CREATE TABLE `twitter` (
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`game_name` varchar(80) NOT NULL,
+	`game_name` varchar(80) NOT NULL UNIQUE,
 	`release_date` date,
 	`rating` tinyint(3),
 	`companyID` int(11) NOT NULL,
