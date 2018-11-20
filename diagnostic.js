@@ -350,8 +350,8 @@ app.post('/search', function(req, res, next) {
                       + "INNER JOIN stock ON gaming_company.id = stock.companyID "
                       + "INNER JOIN twitter ON gaming_company.id = twitter.companyID "
                       + "INNER JOIN game ON gaming_company.id = game.companyID "
-                      + "WHERE gaming_company.comp_name=?";
-      let insertParams = [req.body.search];
+                      + "WHERE gaming_company.comp_name LIKE ?";
+      let insertParams = '%' + [req.body.search] + '%';
   mysql.pool.query(sqlShow, insertParams, function(err, rows, fields) {
     if(err) throw err;
     context.gaming_company = rows;
