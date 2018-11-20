@@ -337,9 +337,9 @@ app.post('/search', function(req, res, next) {
   // Populate database to table
       let sqlShow = "SELECT gaming_company.id, gaming_company.comp_name, stock.ticker, stock.price_close, twitter.url, twitter.buzz, game.game_name " 
                       + "FROM gaming_company "
-                      + "INNER JOIN stock ON gaming_company.id = stock.companyID "
-                      + "INNER JOIN twitter ON gaming_company.id = twitter.companyID "
-                      + "INNER JOIN game ON gaming_company.id = game.companyID "
+                      + "LEFT JOIN stock ON gaming_company.id = stock.companyID "
+                      + "LEFT JOIN twitter ON gaming_company.id = twitter.companyID "
+                      + "LEFT JOIN game ON gaming_company.id = game.companyID "
                       + "WHERE gaming_company.comp_name LIKE ?";
       let insertParams = '%' + [req.body.search] + '%';
   mysql.pool.query(sqlShow, insertParams, function(err, rows, fields) {
