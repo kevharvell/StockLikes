@@ -338,6 +338,26 @@ app.post('/games', function(req, res, next) {
   });
 });
 
+// GAME GENRE - POST
+app.post('/game-genre', function(req, res, next) {
+  
+      //let game_id = game_Input;
+      let sqlInsert2 = "INSERT IGNORE INTO game_genre (gameID, genreID) VALUES (?, ?);";
+      let insertParams2 = [req.body.game_Input, req.body.genreInput];
+      mysql.pool.query(sqlInsert2, insertParams2, function(err, result) {
+        // Show results of INSERT in console
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          console.log("Number of records inserted: " + result.affectedRows);
+          // Populate database to table
+          res.redirect('/games');
+        }
+      });
+    });
+ 
 
 // GAMES PAGE - DELETE
 app.delete('/games/delete/:id', (req, res, next) => {

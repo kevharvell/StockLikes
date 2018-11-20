@@ -17,6 +17,25 @@
     <br>
     <input type="submit" value="Submit">
 </form>
+
+<h3>Add a new genre to a game:</h3>
+<form id="addnewgenre" action="/game-genre" method="post">
+    Game Name: <select class="m-2" name="game_Input" required>
+        {{#each game}}
+            <option value="{{id}}">{{game_name}}</option>
+        {{/each}}
+    </select> <br>
+    
+    Genre: <select class="m-2" name="genreInput" required>
+        {{#each genre}}
+            <option value="{{id}}">{{category}}</option>
+        {{/each}}
+    </select> <br>
+   
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
 <hr/>
 <h3>Current Games:</h3>
 <table class="table table-dark bg-secondary">
