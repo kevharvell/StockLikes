@@ -22,7 +22,7 @@
 <h3>Add a new genre to a game:</h3>
 <form id="addnewgenre" action="/game-genre" method="post">
     Game Name: <select class="m-2" name="game_Input" required>
-        {{#each game}}
+        {{#each gameMenu}}
             <option value="{{id}}">{{game_name}}</option>
         {{/each}}
     </select> <br>

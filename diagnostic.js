@@ -350,7 +350,8 @@ app.get('/games', function(req, res, next) {
                            + "INNER JOIN game ON gaming_company.id = game.companyID "
                            + "INNER JOIN game_genre ON game.id = game_genre.gameID "
                            + "INNER JOIN genre ON game_genre.genreID = genre.id "
-                           + "ORDER BY game.game_name ASC";
+                           + "ORDER BY game.game_name ASC ";
+                           
           mysql.pool.query(sqlShowComps, function(err, rows, fields) {
             if(err) {
               console.log(JSON.stringify(err));
@@ -358,8 +359,19 @@ app.get('/games', function(req, res, next) {
               res.end();
             } else {
               context.game = rows;
-              //console.log(context.game);
-              res.render('games', context);
+              //Populate Current Games Table
+              let sqlShowGames = "SELECT game.id, game.game_name " 
+                               + "FROM game;"
+              mysql.pool.query(sqlShowGames, function(err, rows, fields) {
+                if(err) {
+                  console.log(JSON.stringify(err));
+                  res.write(JSON.stringify(err));
+                  res.end();
+                } else {
+                  context.gameMenu = rows;
+                  res.render('games', context);
+                }
+              });
             }
           });
         }
