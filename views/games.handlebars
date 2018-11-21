@@ -36,6 +36,30 @@
     <input type="submit" value="Submit">
 </form>
 
+<div id="update" class="hidden">
+    <a id="#update">
+    <h3>Update Game</h3>
+    <form id="updateGame" method="post">
+        Gaming Company: <select id="companyUpdate" class="m-2" name="gaming_companyInput" required>
+            {{#each gaming_company}}
+                <option value="{{id}}">{{comp_name}}</option>
+            {{/each}}
+        </select> <br>
+        Game Name: <input type="text" id="gameUpdate" class="m-2" name="gameNameInput" required /><br>
+        Genre: <select id="genreUpdate" class="m-2" name="genreInput" required>
+            {{#each genre}}
+                <option value="{{id}}">{{category}}</option>
+            {{/each}}
+        </select> <br>
+        Release Date: <input type="date" id="dateUpdate" class="m-2" name="dateInput"><br>
+        Rating: <input type="number" id="ratingUpdate" class="m-2" name="ratingInput" min="0" max="100"><br>
+        <br>
+        <input type="hidden" id="oldGenre" name="oldGenre">
+        <input type="submit" value="Update" />
+        <button type="button" id="cancelUpdate" onClick="hideUpdate()">Cancel</button>
+    </form>
+</div>
+
 <hr/>
 <h3>Current Games:</h3>
 <table class="table table-dark bg-secondary">
@@ -48,14 +72,18 @@
     </thead> 
     <tbody> 
         {{#each game}} 
-            <tr> 
+            <tr id="tr{{id}}"> 
                 <td>{{comp_name}}</td>
                 <td>{{game_name}}</td>
                 <td>{{category}}</td>
                 <td>{{release_date}}</td>
                 <td>{{rating}}</td> 
                 <td>
-                    <a class="btn btn-info" href="/games/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                    <a href="#update">
+                        <button id="editBtn{{id}}" class="btn btn-info" onclick="updateGameForm({{id}})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
                     <button class="btn btn-danger" onclick="deleteGame({{id}})">
                         <i class="fas fa-trash-alt"></i>
                     </button>

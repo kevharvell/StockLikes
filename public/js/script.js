@@ -7,17 +7,26 @@ const deleteEditBtn = (id) => {
 	ele.parentNode.removeChild(ele);
 }
 
+const hideUpdate = () => {
+	$("#update").addClass("hidden");
+}
+
+const convertDate = (str) => {
+	var date = new Date(str),
+      month = ("0" + (date.getMonth()+1)).slice(-2),
+      day  = ("0" + date.getDate()).slice(-2);
+  return [ date.getFullYear(), month, day ].join("-");
+}
+
 /* changeGenreForm(id)
 / Takes a genre row id, deletes the contents of that row, 
 / and adds a new form to edit the database */
 
-function changeGenreForm(id) {
+function updateGenreForm(id) {
 	deleteEditBtn(id);
 	let trID = "tr" + id;
 	let tr = document.getElementById(trID);
 	let tds = tr.children;
-	console.log(tr);
-	console.log(tds);
 	let value1 = tds[0].innerHTML;
 
 	// create a form
@@ -47,44 +56,37 @@ function changeGenreForm(id) {
 	tds[0].appendChild(f);
 }
 
-/* changeGenreForm(id)
-/ Takes a genre row id, deletes the contents of that row, 
-/ and adds a new form to edit the database */
 
-function changeGenreForm(id) {
-	deleteEditBtn(id);
+
+function updateGameForm(id) {
+	// show update form
+	$("#update").removeClass("hidden");
+
+	// variables for grabbing data from table
 	let trID = "tr" + id;
 	let tr = document.getElementById(trID);
 	let tds = tr.children;
-	console.log(tr);
 	console.log(tds);
-	let value1 = tds[0].innerHTML;
 
-	// create a form
-	let f = document.createElement("form");
-	f.setAttribute('action', '/genres/' + id);
-	f.setAttribute('method', 'post');
+	// grab data from table to populate into update form
+	let comp = tds[0].innerHTML;
+	let game = tds[1].innerHTML;
+	let genre = tds[2].innerHTML;
+	let date = convertDate(tds[3].innerHTML);
+	let rating = tds[4].innerHTML;
 
-	// create text input for genre category
-	let textCat = document.createElement("input");
-	textCat.type = "text";
-	textCat.name = "category";
-	textCat.value = value1;
-	textCat.classList.add("mr-2");
+	// populate update form with data from data row
+	$("#companyUpdate option:contains(" + comp + ")").prop("selected", "selected");
+	$("#gameUpdate").prop("value", game);
+	$("#genreUpdate option:contains(" + genre + ")").prop("selected", "selected");
+	$("#dateUpdate").prop("value", date);
+	$("#ratingUpdate").prop("value", rating);
 
-	// create a submit button
-	let submitBtn = document.createElement("input");
-	submitBtn.type = "submit";
-	submitBtn.classList.add("btn", "btn-info");
-	submitBtn.value = "Submit Edits";
+	let oldGenre = $("#genreUpdate").val();
+	$("#oldGenre").val(oldGenre);
 
-	// add all elements to the form
-	f.appendChild(textCat);
-	f.appendChild(submitBtn);
-
-	// add form to table row
-	tds[0].innerHTML = "";
-	tds[0].appendChild(f);
+	// make form action route to the right data row
+	$("#updateGame").prop("action", "/games/" + id);
 }
 
 /* The following delete functions send a request to the server

@@ -372,6 +372,42 @@ app.delete('/games/delete/:id', (req, res, next) => {
   });
 });
 
+// GAMES PAGE - UPDATE
+app.post('/games/:id', (req, res) => {
+  let sql = "UPDATE game SET game_name = ?, release_date = ?, rating = ?, companyID = ? WHERE id = ?";
+  let updateParams = [
+    req.body.gameNameInput, 
+    req.body.dateInput, 
+    req.body.ratingInput, 
+    req.body.gaming_companyInput, 
+    req.params.id
+  ];
+  mysql.pool.query(sql, updateParams, (err, result, fields) => {
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      let game_id = req.params.id;
+      let genre_id = req.body.genreInput;
+      let oldGenre = req.body.oldGenre;
+      let sqlUpdate = "UPDATE game_genre SET gameID = ?, genreID = ? WHERE gameID = ? AND genreID = ?;";
+      let updateParams2 = [game_id, genre_id, game_id, oldGenre];
+      mysql.pool.query(sqlUpdate, updateParams2, function(err, result) {
+        // Show results of UPDATE in console
+        if(err) {
+          console.log(JSON.stringify(err));
+          res.write(JSON.stringify(err));
+          res.end();
+        } else {
+          // Populate database to table
+          res.redirect('/games');
+        }
+      });
+    }
+  });
+});
+
 
 // GENRES PAGE - GET
 app.get('/genres', function(req, res, next) {
