@@ -132,7 +132,7 @@ app.get('/stocks', function(req, res, next) {
     } else {
       context.gaming_company = rows;
       //Populate Current Stocks Table
-      let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, stock.date_recorded, stock.price_close " 
+      let sqlShowStocks = "SELECT gaming_company.id, gaming_company.comp_name, stock.id, stock.ticker, DATE_FORMAT(stock.date_recorded, '%m/%d/%Y') AS date_recorded, stock.price_close " 
                         + "FROM gaming_company "
                         + "INNER JOIN stock ON gaming_company.id = stock.companyID";
       mysql.pool.query(sqlShowStocks, function(err, rows, fields) {
@@ -222,7 +222,7 @@ app.get('/twitters', function(req, res, next) {
       context.gaming_company = rows;
 
       //Populate Current Twitter Pages Table
-      let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, twitter.date_recorded, twitter.buzz " 
+      let sqlShowTwitters = "SELECT gaming_company.id, gaming_company.comp_name, twitter.id, twitter.url, DATE_FORMAT(twitter.date_recorded, '%m/%d/%Y') AS date_recorded, twitter.buzz " 
                        + "FROM gaming_company "
                        + "INNER JOIN twitter ON gaming_company.id = twitter.companyID";
       mysql.pool.query(sqlShowTwitters, function(err, rows, fields) {
@@ -345,7 +345,7 @@ app.get('/games', function(req, res, next) {
           context.genre = rows; 
 
           //Populate Current Games Table
-          let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, game.release_date, game.rating " 
+          let sqlShowComps = "SELECT gaming_company.id, gaming_company.comp_name, game.id, game.game_name, genre.category, DATE_FORMAT(game.release_date, '%m/%d/%Y') AS release_date, game.rating " 
                            + "FROM gaming_company "
                            + "INNER JOIN game ON gaming_company.id = game.companyID "
                            + "INNER JOIN game_genre ON game.id = game_genre.gameID "
