@@ -5,6 +5,19 @@
     <br>
     <input type="submit" value="Submit">
 </form>
+
+<hr/>
+<div id="update" class="hidden">
+    <a id="#update">
+    <h3>Update Gaming Company</h3>
+    <form id="updateCompany" method="post">
+        Name of Gaming Company: <input type="text" id="companyUpdate" class="m-2" name="comp_nameInput" required><br>
+        <br>
+        <input type="submit" value="Update" />
+        <button type="button" id="cancelUpdate" onClick="hideUpdate()">Cancel</button>
+    </form>
+</div>
+
 <hr/>
 <h3>Current Gaming Companies:</h3>
 <table class="table table-dark bg-secondary">
@@ -13,10 +26,14 @@
     </thead> 
     <tbody> 
         {{#each gaming_company}}
-        <tr> 
+        <tr id="tr{{id}}"> 
             <td>{{comp_name}}</td> 
             <td>
-                <a class="btn btn-info" href="/gaming-companies/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                <a href="#update">
+                    <button id="editBtn{{id}}" class="btn btn-info" onclick="updateCompanyForm({{id}})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </a>
                 <button class="btn btn-danger" onclick="deleteCompany({{id}})">
                     <i class="fas fa-trash-alt"></i>
                 </button>

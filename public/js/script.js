@@ -1,6 +1,12 @@
+
+/* Change navbar links to active when clicked */
+$(document).ready(function() {
+  $('li.active').removeClass('active');
+  $('a[href="' + location.pathname + '"]').closest('li').addClass('active'); 
+});
+
 /* deleteEditBtn
 / removes the edit button when it is clicked */
-
 const deleteEditBtn = (id) => {
 	let btnID = "editBtn" + id;
 	let ele = document.getElementById(btnID);
@@ -21,7 +27,6 @@ const convertDate = (str) => {
 /* updateGenreForm(id)
 / Takes a genre row id, deletes the contents of that row, 
 / and adds a new form to edit the database */
-
 function updateGenreForm(id) {
 	deleteEditBtn(id);
 	let trID = "tr" + id;
@@ -59,7 +64,6 @@ function updateGenreForm(id) {
 /* updateGameForm(id)
 / Takes desired game row, and populates data to an update form
 / that appears at the beginning of this function */
-
 function updateGameForm(id) {
 	// show update form
 	$("#update").removeClass("hidden");
@@ -68,7 +72,6 @@ function updateGameForm(id) {
 	let trID = "tr" + id;
 	let tr = document.getElementById(trID);
 	let tds = tr.children;
-	console.log(tds);
 
 	// grab data from table to populate into update form
 	let comp = tds[0].innerHTML;
@@ -93,9 +96,8 @@ function updateGameForm(id) {
 
 
 /* updateTwitterForm(id)
-/ Takes desired game row, and populates data to an update form
+/ Takes desired twitter row, and populates data to an update form
 / that appears at the beginning of this function */
-
 function updateTwitterForm(id) {
 	// show update form
 	$("#update").removeClass("hidden");
@@ -104,7 +106,6 @@ function updateTwitterForm(id) {
 	let trID = "tr" + id;
 	let tr = document.getElementById(trID);
 	let tds = tr.children;
-	console.log(tds);
 
 	// grab data from table to populate into update form
 	let comp = tds[0].innerHTML;
@@ -121,9 +122,60 @@ function updateTwitterForm(id) {
 }
 
 
+/* updateStockForm(id)
+/ Takes desired stock row, and populates data to an update form
+/ that appears at the beginning of this function */
+function updateStockForm(id) {
+	// show update form
+	$("#update").removeClass("hidden");
+
+	// variables for grabbing data from table
+	let trID = "tr" + id;
+	let tr = document.getElementById(trID);
+	let tds = tr.children;
+
+	// grab data from table to populate into update form
+	let comp = tds[0].innerHTML;
+	let ticker = tds[1].innerHTML;
+	let date = convertDate(tds[2].innerHTML);
+	let price = tds[3].innerHTML.slice(1);
+
+	// populate update form with data from data row
+	$("#companyUpdate option:contains(" + comp + ")").prop("selected", "selected");
+	$("#tickerUpdate").prop("value", ticker);
+	$("#dateUpdate").prop("value", date);
+	$("#priceUpdate").prop("value", price);
+
+	// make form action route to the right data row
+	$("#updateStock").prop("action", "/stocks/" + id);
+}
+
+
+/* updateCompanyForm(id)
+/ Takes desired twitter row, and populates data to an update form
+/ that appears at the beginning of this function */
+function updateCompanyForm(id) {
+	// show update form
+	$("#update").removeClass("hidden");
+
+	// variables for grabbing data from table
+	let trID = "tr" + id;
+	let tr = document.getElementById(trID);
+	let tds = tr.children;
+
+	// grab data from table to populate into update form
+	let comp = tds[0].innerHTML;
+
+	// populate update form with data from data row
+	$("#companyUpdate").prop("value", comp);
+
+	// make form action route to the right data row
+	$("#updateCompany").prop("action", "/gaming-companies/" + id);
+}
+
+
 /* The following delete functions send a request to the server
 / to delete the entry from the database */
-
 function deleteCompany(id) {
 	// Send Delete request to database with proper id
 	fetch('/gaming-companies/delete/' + id, {

@@ -98,6 +98,24 @@ app.delete('/gaming-companies/delete/:id', (req, res, next) => {
   });
 });
 
+// GAMING COMPANIES PAGE - UPDATE
+app.post('/gaming-companies/:id', (req, res) => {
+  let sql = "UPDATE gaming_company SET comp_name = ? WHERE id = ?";
+  let updateParams = [
+    req.body.comp_nameInput,
+    req.params.id
+  ];
+  mysql.pool.query(sql, updateParams, (err, result, fields) => {
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      res.redirect('/gaming-companies');
+    }
+  });
+});
+
 // STOCKS PAGE - GET
 app.get('/stocks', function(req, res, next) {
   var context = {
@@ -162,6 +180,29 @@ app.delete('/stocks/delete/:id', (req, res, next) => {
     }
   });
 });
+
+
+// STOCKS PAGE - UPDATE
+app.post('/stocks/:id', (req, res) => {
+  let sql = "UPDATE stock SET companyID = ?, ticker = ?, date_recorded = ?, price_close = ? WHERE id = ?";
+  let updateParams = [
+    req.body.gaming_companyInput,
+    req.body.tickerInput, 
+    req.body.dateInput,
+    req.body.price_closeInput,
+    req.params.id,
+  ];
+  mysql.pool.query(sql, updateParams, (err, result, fields) => {
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      res.redirect('/stocks');
+    }
+  });
+});
+
 
 
 // TWITTERS PAGE - GET
