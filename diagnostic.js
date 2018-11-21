@@ -257,6 +257,26 @@ app.delete('/twitters/delete/:id', (req, res, next) => {
   });
 });
 
+// TWITTERS PAGE - UPDATE
+app.post('/twitters/:id', (req, res) => {
+  let sql = "UPDATE twitter SET companyID = ?, url = ?, date_recorded = ? WHERE id = ?";
+  let updateParams = [
+    req.body.gaming_companyInput,
+    req.body.urlInput, 
+    req.body.dateInput,
+    req.params.id,
+  ];
+  mysql.pool.query(sql, updateParams, (err, result, fields) => {
+    if(err) {
+      console.log(JSON.stringify(err));
+      res.write(JSON.stringify(err));
+      res.end();
+    } else {
+      res.redirect('/twitters');
+    }
+  });
+});
+
 
 //GAMES PAGE - GET
 app.get('/games', function(req, res, next) {
@@ -288,7 +308,8 @@ app.get('/games', function(req, res, next) {
                            + "FROM gaming_company "
                            + "INNER JOIN game ON gaming_company.id = game.companyID "
                            + "INNER JOIN game_genre ON game.id = game_genre.gameID "
-                           + "INNER JOIN genre ON game_genre.genreID = genre.id";
+                           + "INNER JOIN genre ON game_genre.genreID = genre.id "
+                           + "ORDER BY game.game_name ASC";
           mysql.pool.query(sqlShowComps, function(err, rows, fields) {
             if(err) {
               console.log(JSON.stringify(err));

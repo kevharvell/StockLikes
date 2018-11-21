@@ -12,6 +12,25 @@
     <br>
     <input type="submit" value="Submit">
 </form>
+
+<hr/>
+<div id="update" class="hidden">
+    <a id="#update">
+    <h3>Update Twitter</h3>
+    <form id="updateTwitter" method="post">
+        Gaming Company: <select class="m-2" id="companyUpdate" name="gaming_companyInput" required>
+            {{#each gaming_company}}
+                <option value="{{id}}">{{comp_name}}</option>
+            {{/each}}
+        </select> <br>
+        Company Twitter URL: <input type="text" id="urlUpdate" class="m-2" name="urlInput" placeholder="EX: https://twitter.com/NintendoAmerica" size="50"> <br>
+        Date: <input type="date" id="dateUpdate" class="m-2" name="dateInput" required><br>
+        <br>
+        <input type="submit" value="Update" />
+        <button type="button" id="cancelUpdate" onClick="hideUpdate()">Cancel</button>
+    </form>
+</div>
+
 <hr/>
 <h3>Current Twitter Pages:</h3>
 <table class="table table-dark bg-secondary">
@@ -23,13 +42,17 @@
     </thead> 
     <tbody> 
         {{#each twitter}} 
-            <tr> 
+            <tr id="tr{{id}}"> 
                 <td>{{comp_name}}</td>
                 <td><a href="{{url}}" target="_blank">{{url}}</a></td>
                 <td>{{date_recorded}}</td>
                 <td>{{buzz}}</td> 
                 <td>
-                    <a class="btn btn-info" href="/twitters/{{id}}" role="button"><i class="fas fa-edit"></i></a>
+                    <a href="#update">
+                        <button id="editBtn{{id}}" class="btn btn-info" onclick="updateTwitterForm({{id}})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </a>
                     <button class="btn btn-danger" onclick="deleteTwitter({{id}})">
                         <i class="fas fa-trash-alt"></i>
                     </button>

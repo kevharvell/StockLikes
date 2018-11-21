@@ -18,7 +18,7 @@ const convertDate = (str) => {
   return [ date.getFullYear(), month, day ].join("-");
 }
 
-/* changeGenreForm(id)
+/* updateGenreForm(id)
 / Takes a genre row id, deletes the contents of that row, 
 / and adds a new form to edit the database */
 
@@ -56,7 +56,9 @@ function updateGenreForm(id) {
 	tds[0].appendChild(f);
 }
 
-
+/* updateGameForm(id)
+/ Takes desired game row, and populates data to an update form
+/ that appears at the beginning of this function */
 
 function updateGameForm(id) {
 	// show update form
@@ -88,6 +90,36 @@ function updateGameForm(id) {
 	// make form action route to the right data row
 	$("#updateGame").prop("action", "/games/" + id);
 }
+
+
+/* updateTwitterForm(id)
+/ Takes desired game row, and populates data to an update form
+/ that appears at the beginning of this function */
+
+function updateTwitterForm(id) {
+	// show update form
+	$("#update").removeClass("hidden");
+
+	// variables for grabbing data from table
+	let trID = "tr" + id;
+	let tr = document.getElementById(trID);
+	let tds = tr.children;
+	console.log(tds);
+
+	// grab data from table to populate into update form
+	let comp = tds[0].innerHTML;
+	let url = tds[1].innerText;
+	let date = convertDate(tds[2].innerHTML);
+
+	// populate update form with data from data row
+	$("#companyUpdate option:contains(" + comp + ")").prop("selected", "selected");
+	$("#urlUpdate").prop("value", url);
+	$("#dateUpdate").prop("value", date);
+
+	// make form action route to the right data row
+	$("#updateTwitter").prop("action", "/twitters/" + id);
+}
+
 
 /* The following delete functions send a request to the server
 / to delete the entry from the database */
