@@ -523,7 +523,12 @@ app.post('/genres', function(req, res, next) {
 
 // GENRES PAGE - DELETE
 app.delete('/genres/delete/:id', (req, res, next) => {
-  mysql.pool.query("DELETE FROM genre WHERE id = ?", [req.params.id], (err, result) => {
+  mysql.pool.query("DELETE genre, game_genre, game " + 
+                   "FROM genre " +
+                   "RIGHT JOIN game_genre ON genre.id = game_genre.genreID " +
+                   "RIGHT JOIN game ON game_genre.gameID = game.id " +
+                   "WHERE game_genre.genreID = ?", 
+                   [req.params.id], (err, result) => {
     if(err) {
       console.log(err);
       res.status(400);
